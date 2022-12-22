@@ -1,0 +1,11 @@
+|2022-12-18.03:27:41.429| Log#1 INFO    - Server started |
+|2022-12-18.03:27:50.618| Log#2 EVENT   - Received command: LOGIN from the tag 194176 |
+|2022-12-18.03:27:50.618| Log#3 INFO    - User Miguel tried to log but username was not found in the database |
+|2022-12-18.03:27:52.213| Log#4 EVENT   - Received command: REGISTER from the tag 194176 |
+|2022-12-18.03:27:52.213| Log#5 INFO    - User Miguel registered |
+|2022-12-18.03:27:55.223| Log#6 EVENT   - Received command: KILL from the tag 194176 |
+|2022-12-18.03:27:55.223| Log#7 EVENT   - User Miguel attempted to shutdown server |
+|2022-12-18.03:28:02.476| Log#8 EVENT   - Received command: LOGIN from the tag 618160 |
+|2022-12-18.03:28:02.476| Log#9 INFO    - User admin logged in |
+|2022-12-18.03:28:03.837| Log#10 EVENT   - Received command: KILL from the tag 618160 |
+|2022-12-18.03:28:03.837| Log#11 EVENT   - User admin requested server shutdown |
