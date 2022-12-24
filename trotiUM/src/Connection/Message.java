@@ -15,8 +15,12 @@ public class Message<T> implements Serializable{
     public static final String UNSUBSCRIBE = "UNSUBSCRIBE";
     public static final String GET_USER = "GET_USER";
     public static final String KILL = "KILL";
+    public static final String VIEW_PROFILE = "VIEW_PROFILE";
+    public static final String UPDATE_PROFILE = "UPDATE_PROFILE";
+    
 
     private static final long serialVersionUID = 1L;
+
     private T data;
 
     public Message(T data){

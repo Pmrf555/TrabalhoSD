@@ -1,11 +1,33 @@
-|2022-12-18.03:27:41.429| Log#1 INFO    - Server started |
-|2022-12-18.03:27:50.618| Log#2 EVENT   - Received command: LOGIN from the tag 194176 |
-|2022-12-18.03:27:50.618| Log#3 INFO    - User Miguel tried to log but username was not found in the database |
-|2022-12-18.03:27:52.213| Log#4 EVENT   - Received command: REGISTER from the tag 194176 |
-|2022-12-18.03:27:52.213| Log#5 INFO    - User Miguel registered |
-|2022-12-18.03:27:55.223| Log#6 EVENT   - Received command: KILL from the tag 194176 |
-|2022-12-18.03:27:55.223| Log#7 EVENT   - User Miguel attempted to shutdown server |
-|2022-12-18.03:28:02.476| Log#8 EVENT   - Received command: LOGIN from the tag 618160 |
-|2022-12-18.03:28:02.476| Log#9 INFO    - User admin logged in |
-|2022-12-18.03:28:03.837| Log#10 EVENT   - Received command: KILL from the tag 618160 |
-|2022-12-18.03:28:03.837| Log#11 EVENT   - User admin requested server shutdown |
+=========================================== New Server Instance ============================================
+|2022-12-24.01:55:41.748| Log#1 INFO     ->                         Server started                         |
+|2022-12-24.01:55:46.740| Log#2 EVENT    ->           Received command: LOGIN from the tag 6495            |
+|2022-12-24.01:55:46.741| Log#3 INFO     ->                      User admin logged in                      |
+|2022-12-24.01:55:46.788| Log#4 EVENT    ->       Received command: UPDATE_PROFILE from the tag 6495       |
+|2022-12-24.01:55:49.242| Log#5 EVENT    ->        Received command: VIEW_PROFILE from the tag 6495        |
+|2022-12-24.01:55:54.889| Log#6 EVENT    ->       Received command: LIST_SCOOTERS from the tag 6495        |
+|2022-12-24.01:55:54.890| Log#7 INFO     ->            User admin requested scooters in radius             |
+|2022-12-24.01:56:03.529| Log#8 EVENT    ->          Received command: REGISTER from the tag 9739          |
+|2022-12-24.01:56:03.530| Log#9 INFO     ->                     User Miguel registered                     |
+|2022-12-24.01:56:04.711| Log#10 EVENT   ->       Received command: LIST_SCOOTERS from the tag 9739        |
+|2022-12-24.01:56:04.711| Log#11 INFO    ->            User Miguel requested scooters in radius            |
+|2022-12-24.01:56:09.353| Log#12 EVENT   ->        Received command: VIEW_PROFILE from the tag 9739        |
+|2022-12-24.01:56:52.567| Log#13 EVENT   ->           Received command: LOGIN from the tag 45553           |
+|2022-12-24.01:56:52.567| Log#14 INFO    ->                      User admin logged in                      |
+|2022-12-24.01:56:52.586| Log#15 EVENT   ->      Received command: UPDATE_PROFILE from the tag 45553       |
+|2022-12-24.01:56:54.444| Log#16 EVENT   ->           Received command: KILL from the tag 45553            |
+|2022-12-24.01:56:54.445| Log#17 EVENT   ->              User admin requested server shutdown              |
+
+=========================================== New Server Instance ============================================
+|2022-12-24.01:56:58.103| Log#1 INFO     ->                         Server started                         |
+|2022-12-24.01:57:04.671| Log#2 EVENT    ->           Received command: LOGIN from the tag 63475           |
+|2022-12-24.01:57:04.672| Log#3 INFO     ->                      User admin logged in                      |
+|2022-12-24.01:57:04.730| Log#4 EVENT    ->      Received command: UPDATE_PROFILE from the tag 63475       |
+|2022-12-24.01:57:07.666| Log#5 EVENT    ->       Received command: LIST_SCOOTERS from the tag 63475       |
+|2022-12-24.01:57:07.667| Log#6 INFO     ->            User admin requested scooters in radius             |
+|2022-12-24.01:57:11.874| Log#7 EVENT    ->       Received command: LIST_SCOOTERS from the tag 63475       |
+|2022-12-24.01:57:11.875| Log#8 INFO     ->            User admin requested scooters in radius             |
+|2022-12-24.01:58:29.775| Log#9 EVENT    ->           Received command: LOGIN from the tag 58027           |
+|2022-12-24.01:58:29.775| Log#10 INFO    ->                      User admin logged in                      |
+|2022-12-24.01:58:29.793| Log#11 EVENT   ->      Received command: UPDATE_PROFILE from the tag 58027       |
+|2022-12-24.01:58:31.749| Log#12 EVENT   ->           Received command: KILL from the tag 58027            |
+|2022-12-24.01:58:31.749| Log#13 EVENT   ->              User admin requested server shutdown              |

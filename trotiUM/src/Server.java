@@ -1,12 +1,17 @@
+import java.io.Console;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Connection.TaggedConnection;
 import Utilities.Log;
+import Utilities.Matrix;
+import Utilities.Pair;
 import Utilities.SHA256;
+import Utilities.StringPad;
 import Connection.Message;
 
 class Server{
@@ -15,7 +20,19 @@ class Server{
     private final static User admin = new User("admin", SHA256.getSha256("admin"));
     private ArrayList<User> users = new ArrayList<User>();
     private Lock lock = new ReentrantLock();
-    private State state = new State();
+    private State state = new State(20,2,800);
+
+    public class ServerView{
+        public static final Console console = System.console();
+
+        public static void printUserlist(List<User> users){
+            console.printf(StringPad.padString(" USER LIST ", 80, '-') + "\n");
+            for (User u : users){
+                console.printf(u.serverLogRight() + "\n");
+            }
+            console.printf(StringPad.padString("", 80, '-') + "\n");
+        }
+    }
 
     public Server(){
         users.add(admin);
@@ -23,6 +40,56 @@ class Server{
 
     private boolean isAdmin(User user){
         return user.checkCredentials(Server.admin);
+    }
+
+    private boolean validUser (User user){
+        lock.lock();
+        try{
+            for (User u : users){
+                if (u.checkCredentials(user)) return true;
+            }
+            return false;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private User sendUser(User user) throws User.InvalidUser{
+        lock.lock();
+        try{
+            for (User u : users){
+                if (u.checkCredentials(user)) return u;
+            }
+            throw new User.InvalidUser("User does not exist");
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private Boolean updateUser(User user) throws User.InvalidUser{
+        lock.lock();
+        try{
+            for (User u : users){
+                if (u.checkCredentials(user)){
+                    return u.update(user);
+                }
+            }
+            throw new User.InvalidUser("User does not exist");
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private Matrix<List<Scooter>> scootersInRadius(User user) throws User.InvalidUser{
+        if (this.validUser(user)){
+            Pair<Integer, Integer> pos = user.getPosition();
+            Matrix<List<Scooter>> radius = state.getScootersInRadius(pos.getL(), pos.getR());
+            Log.all(Log.INFO,"User " + user.getUsername() + " requested scooters in radius");
+            return radius;
+        }
+        else{
+            throw new User.InvalidUser("Permission Denied");
+        }   
     }
 
     private boolean KILL(User user) throws User.InvalidUser{
@@ -79,6 +146,7 @@ class Server{
     }
 
     public void start() throws Exception {
+        Log.line("\n" + StringPad.padString(" New Server Instance ", 108, '=')+ "\n");
         Log.all(Log.INFO,"Server started");
         ServerSocket ss = new ServerSocket(Server.PORT);
 
@@ -132,6 +200,15 @@ class Server{
                                 break;
                             
                             case Message.LIST_SCOOTERS:
+                                if (data.getClass() == User.class){
+                                    User dataUser = (User) data;
+                                    try {
+                                        Matrix<List<Scooter>> scooters = scootersInRadius(dataUser);
+                                        c.write(tag, Message.OK, scooters);
+                                    } catch (User.InvalidUser e) {
+                                        c.write(tag, Message.ERROR, e.getMessage());
+                                    }
+                                }
                                 break;
 
                             case Message.RESERVE_SCOOTER:
@@ -162,13 +239,37 @@ class Server{
                                         c.write(tag, Message.ERROR, e.getMessage());
                                     }
                                 }
+                                break;
+                            
+                            case Message.VIEW_PROFILE:
+                                if (data.getClass() == User.class){
+                                    User dataUser = (User) data;
+                                    try {
+                                        User user = sendUser(dataUser);
+                                        c.write(tag, Message.OK, user);
+                                    } catch (User.InvalidUser e) {
+                                        c.write(tag, Message.ERROR, e.getMessage());
+                                    }
+                                }
+                                break;
 
+                            case Message.UPDATE_PROFILE:
+                                if (data.getClass() == User.class){
+                                    User dataUser = (User) data;
+                                    try {
+                                        Boolean success = updateUser(dataUser);
+                                        c.write(tag, Message.OK, success);
+                                    } catch (User.InvalidUser e) {
+                                        c.write(tag, Message.ERROR, e.getMessage());
+                                    }
+                                }
+                                break;
                             default: // Invalid command
                                 c.write(tag, command, "Invalid command");
                                 break;
 
                         }
-                        System.out.println(users);
+                        Server.ServerView.printUserlist(users);
                     }
                 } catch (Exception ignored) { }
             };

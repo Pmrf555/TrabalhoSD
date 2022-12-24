@@ -1,10 +1,9 @@
 package Utilities;
 
 import java.io.Console;
+import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,18 +15,25 @@ public class Log {
     public static final String DEBUG =   "DEBUG  ";
 
     private static final AtomicInteger counter = new AtomicInteger(1);
-    private static final String logFilename = "./data/logmein.log";
+    private static final String logFilename;
     private static final Console console = System.console();
     private static final FileOutputStream logFile;
 
     static {
-      FileOutputStream tmp = null;
-      try {
-        tmp = new FileOutputStream(logFilename, true);
-      } catch (Exception e) {
-        System.err.println("Error opening log file");
-      }
-      logFile = tmp;
+        FileOutputStream tmp = null;
+        String file = "./../data/logmein.log";
+        File tmpDir = new File(file);
+        boolean exists = tmpDir.exists() && !tmpDir.isDirectory();
+        if(!exists){
+            file = file.replace("../", "/");
+        }
+        try {
+            tmp = new FileOutputStream(file,true);
+        } catch (IOException e) {
+            System.err.println("Error creating log file");
+        }
+        logFile = tmp;
+        logFilename = file;
     }
 
     private static String getTimestamp(){
@@ -37,7 +43,7 @@ public class Log {
     }
 
     public static String formated(String type,String message){
-        String formated = String.format("|%s| Log#%d %s - %s |\n",getTimestamp(),counter.getAndIncrement(),type,message);
+        String formated = String.format("|%s|%s->%s|\n",getTimestamp(),StringPad.padString(String.format("Log#%d %s",counter.getAndIncrement(),type),16),StringPad.padString(message,64));
         //console.printf("%s",formated);
         Log.to(formated);
         return formated;
@@ -45,6 +51,10 @@ public class Log {
 
     public static void all(String type,String message,boolean toscreen){
         console.printf("%s",formated(type, message));
+    }
+
+    public static void line(String line){
+        to(line);
     }
 
     public static void all(String type,String message){

@@ -1,6 +1,7 @@
+package Utilities;
 import java.io.Serializable;
-
-import Utilities.Pair;
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class Matrix<T> implements Serializable {
     private static final long serialVersionUID = 1L;

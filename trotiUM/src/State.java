@@ -1,8 +1,11 @@
 import java.util.concurrent.locks.*;
 
+import Utilities.Matrix;
 import Utilities.Pair;
+import Utilities.Rand;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class State {
     private static final Integer MAX_SCOOTERS_PER_SQUARE = 3;
@@ -10,26 +13,30 @@ public class State {
     private static final Integer AVERAGE_SCOOTERS_PER_SQUARE = State.MAX_SCOOTERS_PER_SQUARE - State.MIN_SCOOTERS_PER_SQUARE;
     private Integer gridDimension;
     private Integer radius;
+    private Integer totalScooters;
     private Lock lock = new ReentrantLock();
     private ArrayList<Scooter> scooterList;
-    private Matrix<ArrayList<Scooter>> grid;
+    private Matrix<List<Scooter>> grid;
     private Matrix<Integer> scooterDistribution;
     private Matrix<Integer> scooterRewards;
 
 
-    public State(Integer gridDimension, Integer radius){
+    public State(Integer gridDimension, Integer radius, Integer totalScooters){
+        this.totalScooters = totalScooters;
         this.gridDimension = gridDimension;
         this.radius = radius;
         this.scooterList = new ArrayList<Scooter>();
-        this.grid = new Matrix<ArrayList<Scooter>>(gridDimension);
+        this.grid = new Matrix<List<Scooter>>(gridDimension);
         this.scooterDistribution = new Matrix<Integer>(gridDimension);
         this.scooterRewards = new Matrix<Integer>(gridDimension);
+        this.generateScooters();
+        this.generateMap();
         this.updateDistribution();
         this.generateRewards();
     }
 
     public State(){
-        this(1,1);
+        this(1,1,1);
     }
 
     public Integer dimension(){
@@ -40,6 +47,14 @@ public class State {
         return this.radius;
     }
 
+    public Integer totalScooters(){
+        return this.totalScooters;
+    }
+
+    public void setTotalScooters(Integer totalScooters){
+        this.totalScooters = totalScooters;
+    }
+
     public ArrayList<Scooter> scooterList(){
         return this.scooterList;
     }
@@ -48,7 +63,7 @@ public class State {
         return this.scooterRewards;
     }
 
-    public Matrix<ArrayList<Scooter>> grid(){
+    public Matrix<List<Scooter>> grid(){
         return this.grid;
     }
 
@@ -56,7 +71,7 @@ public class State {
         this.radius = radius;
     }
 
-    public ArrayList<Scooter> getScootersInPos(Integer x, Integer y){
+    public List<Scooter> getScootersInPos(Integer x, Integer y){
         return this.grid.get(x,y);
     }
 
@@ -68,10 +83,27 @@ public class State {
         return this.scooterRewards.get(x, y);
     }
 
+    public void generateScooters(){
+        for(int i = 0; i < this.totalScooters; i++){
+            Integer x = Rand.randInt(0, this.gridDimension - 1);
+            Integer y = Rand.randInt(0, this.gridDimension - 1);
+            this.addScooter(new Scooter(x,y));
+        }
+    }
+
+    public void generateMap(){
+        for(Scooter scooter : this.scooterList){
+            Pair<Integer, Integer> pos = scooter.getPos();
+            this.addScooterToGrid(scooter, pos.getL(), pos.getR());
+        }
+    }
+
     public void addScooter(Scooter scooter){
         this.lock.lock();
         try{
             this.scooterList.add(scooter);
+            //Pair<Integer, Integer> pos = scooter.getPos();
+            //this.addScooterToGrid(scooter, pos.getL(), pos.getR());
         }
         finally{
             this.lock.unlock();
@@ -81,13 +113,12 @@ public class State {
     public void addScooterToGrid(Scooter scooter, Integer x, Integer y){
         this.lock.lock();
         try{
-            ArrayList<Scooter> scooterList = this.grid.get(x,y);
+            List<Scooter> scooterList = this.grid.get(x,y);
             if(scooterList == null){
                 scooterList = new ArrayList<Scooter>();
             }
             scooterList.add(scooter);
             this.grid.set(x, y, scooterList);
-            scooter.setPos(x,y);
         }
         finally{
             this.lock.unlock();
@@ -97,7 +128,7 @@ public class State {
     public void removeScooterFromGrid(Scooter scooter, Integer x, Integer y){
         this.lock.lock();
         try{
-            ArrayList<Scooter> scooterList = this.grid.get(x,y);
+            List<Scooter> scooterList = this.grid.get(x,y);
             if(scooterList != null){
                 scooterList.remove(scooter);
                 this.grid.set(x, y, scooterList);
@@ -155,6 +186,7 @@ public class State {
         finally{
             this.lock.unlock();
         }
+        //System.out.println(this.scooterRewards);
     }
 
     private void generateDistribution(){
@@ -162,7 +194,8 @@ public class State {
         try{
             for(int i = 0; i < this.gridDimension; i++){
                 for(int j = 0; j < this.gridDimension; j++){
-                    ArrayList<Scooter> scooterList = this.grid.get(i,j);
+                    this.scooterDistribution.set(i, j, 0);
+                    List<Scooter> scooterList = this.grid.get(i,j);
                     if(scooterList != null){
                         for (Scooter scooter : scooterList) {
                             if(!scooter.isBeingUsed()){
@@ -178,7 +211,8 @@ public class State {
         }
         finally{
             this.lock.unlock();
-        }     
+        }
+        //System.out.println(this.scooterDistribution);
     }
 
     private Integer getDistribution(Integer x, Integer y){
@@ -201,26 +235,37 @@ public class State {
         }
     }
 
-    public Matrix<ArrayList<Scooter>> getScootersInRadius(Integer x,Integer y){
-        Matrix<ArrayList<Scooter>> scootersInRadius = new Matrix<ArrayList<Scooter>>(2*this.radius + 1);
+    public Matrix<List<Scooter>> getScootersInRadius(Integer x,Integer y){
+        Matrix<List<Scooter>> scootersInRadius = new Matrix<List<Scooter>>(2*this.radius + 1);
+        int start_x = x-this.radius;
+        int end_x = x+this.radius;
+        int start_y = y-this.radius;
+        int end_y = y+this.radius;
+        if (x-this.radius < 0){start_x = 0; }
+        if (x+this.radius > this.gridDimension-1){end_x = this.gridDimension-1; }
+        if (y-this.radius < 0){start_y = 0; }
+        if (y+this.radius > this.gridDimension-1){end_y = this.gridDimension-1; }
         this.lock.lock();
         try{ 
-            for(int i = x-this.radius;i<=x+this.radius;i++){
-                for(int j = y-this.radius;j<=y+this.radius;j++){
+            for(int i = start_x;i<=end_x;i++){
+                for(int j = start_y;j<=end_y;j++){
                     Integer distance = Matrix.manhattan(x, y, i, j);
-                    if (distance <= this.radius)
-                        scootersInRadius.set(i, j, this.grid.get(i, j));
-                    else
-                        scootersInRadius.set(i, j, null);
+                    if (distance <= this.radius){
+                        List<Scooter> scooterList = this.grid.get(i, j);
+                        if (scooterList == null)
+                            scooterList = new ArrayList<Scooter>();
+                        scootersInRadius.set(i-start_x, j-start_y, scooterList);
+                    }
+                    else{
+                        scootersInRadius.set(i-start_x, j-start_y, new ArrayList<Scooter>());
+                    }
                 }
             }
+            return scootersInRadius;
         }
         finally{
             this.lock.unlock();
         }
-
-
-        return scootersInRadius;
     }
 
     public Matrix<Integer> getRewardsInRadius(Integer x, Integer y){
