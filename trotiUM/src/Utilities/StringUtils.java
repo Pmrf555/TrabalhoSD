@@ -1,6 +1,6 @@
 package Utilities;
 
-public class StringPad {
+public class StringUtils {
     public static void main(String[] args) {
       // Test the padding function with some examples
       System.out.println(padString("hello", 8));
@@ -8,6 +8,18 @@ public class StringPad {
       System.out.println(padString("hello", 3));
       System.out.println(padString("hello", 15, '*'));
     }
+
+    public static boolean isNumeric(String strNum) {
+      if (strNum == null) {
+          return false;
+      }
+      try {
+          Double.parseDouble(strNum);
+      } catch (NumberFormatException nfe) {
+          return false;
+      }
+      return true;
+  }
     
     public static String padString(String str, int targetLength) {
       // Padding character is a space by default

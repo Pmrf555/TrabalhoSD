@@ -1,5 +1,6 @@
 import java.util.concurrent.locks.*;
 
+import Utilities.Log;
 import Utilities.Matrix;
 import Utilities.Pair;
 import Utilities.Rand;
@@ -20,6 +21,12 @@ public class State {
     private Matrix<Integer> scooterDistribution;
     private Matrix<Integer> scooterRewards;
 
+    public static class RadiusTooFar extends Exception {
+        private static final long serialVersionUID = 1L;
+        public RadiusTooFar(String message){
+            super(message);
+        }
+    }
 
     public State(Integer gridDimension, Integer radius, Integer totalScooters){
         this.totalScooters = totalScooters;
@@ -241,9 +248,9 @@ public class State {
         int end_x = x+this.radius;
         int start_y = y-this.radius;
         int end_y = y+this.radius;
-        if (x-this.radius < 0){start_x = 0; }
+        if (x-this.radius <= 0){start_x = 0; }
         if (x+this.radius > this.gridDimension-1){end_x = this.gridDimension-1; }
-        if (y-this.radius < 0){start_y = 0; }
+        if (y-this.radius <= 0){start_y = 0; }
         if (y+this.radius > this.gridDimension-1){end_y = this.gridDimension-1; }
         this.lock.lock();
         try{ 
@@ -257,11 +264,14 @@ public class State {
                         scootersInRadius.set(i-start_x, j-start_y, scooterList);
                     }
                     else{
-                        scootersInRadius.set(i-start_x, j-start_y, new ArrayList<Scooter>());
+                        scootersInRadius.set(i-start_x, j-start_y, null);
                     }
                 }
             }
             return scootersInRadius;
+        }catch(Exception e){
+            Log.all(Log.ERROR, e.getMessage());
+            return null;
         }
         finally{
             this.lock.unlock();
@@ -270,15 +280,23 @@ public class State {
 
     public Matrix<Integer> getRewardsInRadius(Integer x, Integer y){
         Matrix<Integer> rewardsInRadius = new Matrix<Integer>(2*this.radius + 1);
+        int start_x = x-this.radius;
+        int end_x = x+this.radius;
+        int start_y = y-this.radius;
+        int end_y = y+this.radius;
+        if (x-this.radius <= 0){start_x = 0; }
+        if (x+this.radius > this.gridDimension-1){end_x = this.gridDimension-1; }
+        if (y-this.radius <= 0){start_y = 0; }
+        if (y+this.radius > this.gridDimension-1){end_y = this.gridDimension-1; }
         this.lock.lock();
         try{ 
-            for(int i = x-this.radius;i<=x+this.radius;i++){
-                for(int j = y-this.radius;j<=y+this.radius;j++){
+            for(int i = start_x;i<=end_x;i++){
+                for(int j = start_y;j<=end_y;j++){
                     Integer distance = Matrix.manhattan(x, y, i, j);
                     if (distance <= this.radius)
-                        rewardsInRadius.set(i, j, this.scooterRewards.get(i, j));
+                        rewardsInRadius.set(i-start_x, j-start_y, this.scooterRewards.get(i, j));
                     else
-                        rewardsInRadius.set(i, j, null);
+                        rewardsInRadius.set(i-start_x, j-start_y, 0);
                 }
             }
         }
@@ -287,6 +305,83 @@ public class State {
         }
         return rewardsInRadius;
     }
+
+    public Pair<String,Scooter> reserveScooter(User user, int idScooter) throws Scooter.InvalidScooter,State.RadiusTooFar{
+        this.lock.lock();
+        Scooter scooter = null;
+        try{
+            for(Scooter a : this.scooterList){
+                if(a.getId() == idScooter){
+                    scooter = a;
+                    break;
+                }
+            }
+            if(scooter == null){
+                throw new Scooter.InvalidScooter("Scooter does not exist");
+            }
+            if(scooter.isBeingUsed()){
+                throw new Scooter.InvalidScooter("Scooter is being used");
+            }
+            Pair<Integer, Integer> scooterPos = scooter.getPos();
+            Pair<Integer, Integer> userPos = user.getPosition();
+            Integer distance = Matrix.manhattan(userPos.getL(), userPos.getR(), scooterPos.getL(), scooterPos.getR());
+            if (distance >= this.radius){
+                throw new State.RadiusTooFar("Radius too far");
+            }
+            scooter.setLastUser(user.getUsername());
+            String code = scooter.aquire();
+            this.updateDistribution();
+            this.generateRewards();
+            return new Pair<String,Scooter>(code,scooter);
+        }
+        finally{
+            this.lock.unlock();
+        }
+    }
+
+    public Scooter getById(Integer idScooter) throws Scooter.InvalidScooter{
+        this.lock.lock();
+        try{
+            for(Scooter a : this.scooterList){
+                if(a.getId() == idScooter){
+                    return a;
+                }
+            }
+            throw new Scooter.InvalidScooter("Scooter does not exist");
+        }
+        finally{
+            this.lock.unlock();
+        }
+    }
+
+    public User parkScooter(User user,String reservationCode,Integer x, Integer y, Scooter scooter) throws Scooter.InvalidReservationCode{
+        this.lock.lock();
+        try{
+            List<Scooter> scooterList = this.grid.get(x, y);
+            if(scooterList == null){
+                scooterList = new ArrayList<Scooter>();
+            }
+            int reward = this.scooterRewards.get(x, y);
+            scooterList.add(scooter);
+            this.grid.set(x, y, scooterList);
+            Pair<Integer, Integer> stop = new Pair<Integer, Integer>(x, y);
+            Scooter.Invoice invoice = scooter.generateInvoice(user,stop);
+            user.addInvoice(invoice);
+            user.addReward(reward);
+            scooter.setPos(stop);
+            scooter.release(reservationCode);
+            this.updateDistribution();
+            this.generateRewards();
+            return user;
+        }
+        catch(Exception e){
+            throw e;
+        }
+        finally{
+            this.lock.unlock();
+        }
+    }
+
 }
 /*
         void existemTrotinetesProximas(Integer x1,Integer y1,PrintWriter out){//envia para o cliente as posições das trotinetes

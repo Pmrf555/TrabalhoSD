@@ -1,7 +1,5 @@
 package Utilities;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Iterator;
 
 public class Matrix<T> implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -12,6 +10,7 @@ public class Matrix<T> implements Serializable {
     public Matrix(Integer dimension){
         this.dimension = dimension;
         this.matrix = (T[][]) new Object[dimension][dimension];
+        this.initialize();
     }
 
     public T get(Integer x, Integer y) throws IndexOutOfBoundsException{
@@ -49,6 +48,14 @@ public class Matrix<T> implements Serializable {
             res += "\n";
         }
         return res;
+    }
+
+    public void initialize(){
+        for(int i = 0; i < this.dimension; i++){
+            for(int j = 0; j < this.dimension; j++){
+                this.matrix[i][j] = null;
+            }
+        }
     }
 
     public static Integer manhattan(Integer x1, Integer y1, Integer x2, Integer y2){

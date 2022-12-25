@@ -15,7 +15,6 @@ public class Log {
     public static final String DEBUG =   "DEBUG  ";
 
     private static final AtomicInteger counter = new AtomicInteger(1);
-    private static final String logFilename;
     private static final Console console = System.console();
     private static final FileOutputStream logFile;
 
@@ -33,7 +32,6 @@ public class Log {
             System.err.println("Error creating log file");
         }
         logFile = tmp;
-        logFilename = file;
     }
 
     private static String getTimestamp(){
@@ -43,7 +41,7 @@ public class Log {
     }
 
     public static String formated(String type,String message){
-        String formated = String.format("|%s|%s->%s|\n",getTimestamp(),StringPad.padString(String.format("Log#%d %s",counter.getAndIncrement(),type),16),StringPad.padString(message,64));
+        String formated = String.format("|%s|%s->%s|\n",getTimestamp(),StringUtils.padString(String.format("Log#%d %s",counter.getAndIncrement(),type),16),StringUtils.padString(message,64));
         //console.printf("%s",formated);
         Log.to(formated);
         return formated;

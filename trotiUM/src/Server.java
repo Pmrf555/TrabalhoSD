@@ -2,6 +2,7 @@ import java.io.Console;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -11,26 +12,31 @@ import Utilities.Log;
 import Utilities.Matrix;
 import Utilities.Pair;
 import Utilities.SHA256;
-import Utilities.StringPad;
+import Utilities.StringUtils;
 import Connection.Message;
 
 class Server{
     private final static int WORKERS_PER_CONNECTION = 3;
     private final static int PORT = 12345;
+    public final static int GRID_DIMENSION = 20;
+    public final static int MAX_SCOOTERS = 800;
+    public final static int RADIUS = 2;
     private final static User admin = new User("admin", SHA256.getSha256("admin"));
+    private HashMap<User,String> tokens = new HashMap<User,String>();
+    private HashMap<String,Integer> codeId = new HashMap<String,Integer>();
     private ArrayList<User> users = new ArrayList<User>();
     private Lock lock = new ReentrantLock();
-    private State state = new State(20,2,800);
+    private State state = new State(GRID_DIMENSION, RADIUS, MAX_SCOOTERS);
 
     public class ServerView{
         public static final Console console = System.console();
 
         public static void printUserlist(List<User> users){
-            console.printf(StringPad.padString(" USER LIST ", 80, '-') + "\n");
+            console.printf(StringUtils.padString(" USER LIST ", 80, '-') + "\n");
             for (User u : users){
                 console.printf(u.serverLogRight() + "\n");
             }
-            console.printf(StringPad.padString("", 80, '-') + "\n");
+            console.printf(StringUtils.padString("", 80, '-') + "\n");
         }
     }
 
@@ -54,11 +60,43 @@ class Server{
         }
     }
 
+    private User getUser(User user){
+        return getUserByUsername(user.getUsername());
+    }
+    
+    private User getUserByUsername(String username){
+        lock.lock();
+        try{
+            for (User u : users){
+                if (u.getUsername().equals(username)) return u;
+            }
+            return null;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+
     private User sendUser(User user) throws User.InvalidUser{
         lock.lock();
         try{
             for (User u : users){
                 if (u.checkCredentials(user)) return u;
+            }
+            throw new User.InvalidUser("User does not exist");
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private Boolean updatePosition(User user) throws User.InvalidUser{
+        lock.lock();
+        try{
+            for (User u : users){
+                if (u.checkCredentials(user)){
+                    u.setPosition(user.getPosition());
+                    return true;
+                }
             }
             throw new User.InvalidUser("User does not exist");
         } finally {
@@ -80,16 +118,63 @@ class Server{
         }
     }
 
+    private Matrix<Integer> rewardsInRadius(Pair<Integer,Integer> destination) {
+        return state.getRewardsInRadius(destination.getL(), destination.getR()); 
+    }
+
+    private Boolean parkScooter(String username, String scooterReservationCode, Integer x, Integer y) throws User.InvalidUser, Scooter.InvalidReservationCode, Scooter.InvalidScooter{
+        User user = getUserByUsername(username);
+        try{
+            Integer scooter_id = codeId.get(scooterReservationCode);
+            if (scooter_id == null) throw new Scooter.InvalidReservationCode("Invalid Reservation Code");
+            user = this.state.parkScooter(user, scooterReservationCode, x, y, state.getById(scooter_id));
+            user.setPosition(new Pair<Integer,Integer>(x,y));
+            this.tokens.remove(user);
+            this.codeId.remove(scooterReservationCode);
+            Log.all(Log.INFO,"User " + user.getUsername() + " Parked Scooter " + scooter_id);
+            return true;
+        }
+        catch(Exception e){
+            Log.all(Log.ERROR,e.getMessage());
+            throw e;
+        }
+    }
     private Matrix<List<Scooter>> scootersInRadius(User user) throws User.InvalidUser{
         if (this.validUser(user)){
             Pair<Integer, Integer> pos = user.getPosition();
             Matrix<List<Scooter>> radius = state.getScootersInRadius(pos.getL(), pos.getR());
+            System.out.println(user);
             Log.all(Log.INFO,"User " + user.getUsername() + " requested scooters in radius");
             return radius;
         }
         else{
             throw new User.InvalidUser("Permission Denied");
         }   
+    }
+
+    private String reserveScooter(String username, String password, String idScooter) throws User.InvalidUser, Scooter.InvalidScooter, State.RadiusTooFar{
+        User user = new User(username, password);
+        Pair<String,Scooter> response = null;
+        if (this.validUser(user)){
+            try{
+                user = this.getUser(user);
+                System.out.println(user);
+                response = state.reserveScooter(user, Integer.parseInt(idScooter));
+                Scooter scooter = response.getR();
+                String code = response.getL();
+                this.tokens.put(user, code);
+                Log.all(Log.INFO,"User " + user.getUsername() + " Reservation: Scooter " + scooter.getId());
+                tokens.put(user, code);
+                codeId.put(code, scooter.getId());
+                return code;
+            }catch(Exception e){
+                Log.all(Log.ERROR,e.getMessage());
+                throw e;
+            }
+        }
+        else{
+            throw new User.InvalidUser("Permission Denied");
+        }
     }
 
     private boolean KILL(User user) throws User.InvalidUser{
@@ -144,9 +229,9 @@ class Server{
         }
         return success;
     }
-
+    @SuppressWarnings("unchecked")
     public void start() throws Exception {
-        Log.line("\n" + StringPad.padString(" New Server Instance ", 108, '=')+ "\n");
+        Log.line("\n" + StringUtils.padString(" New Server Instance ", 108, '=')+ "\n");
         Log.all(Log.INFO,"Server started");
         ServerSocket ss = new ServerSocket(Server.PORT);
 
@@ -174,7 +259,7 @@ class Server{
                                         try {
                                             success = register(username, password);
                                         } catch (User.InvalidUser e) {
-                                            c.write(tag, Message.ERROR, e.getMessage());
+                                            c.write(tag, Message.ERROR, e);
                                         }
                                         if (success) c.write(tag, Message.OK, (Boolean)true);
                                     }
@@ -206,15 +291,35 @@ class Server{
                                         Matrix<List<Scooter>> scooters = scootersInRadius(dataUser);
                                         c.write(tag, Message.OK, scooters);
                                     } catch (User.InvalidUser e) {
-                                        c.write(tag, Message.ERROR, e.getMessage());
+                                        c.write(tag, Message.ERROR, e);
                                     }
                                 }
                                 break;
 
                             case Message.RESERVE_SCOOTER:
+                                if (data.getClass() == String.class){
+                                    String[] dataString = ((String) data).split(",");
+                                    try {
+                                        String code = reserveScooter(dataString[0], dataString[1], dataString[2]);
+                                            c.write(tag, Message.OK, code);
+                                    }
+                                    catch (Exception e) {
+                                        c.write(tag, Message.ERROR, e);
+                                    }
+                                }
                                 break;
 
                             case Message.PARK_SCOOTER:
+                                if (data.getClass() == String.class){
+                                    String[] dataString = ((String) data).split(",");
+                                    try {
+                                        parkScooter(dataString[0], dataString[1], Integer.parseInt(dataString[2]),Integer.parseInt(dataString[3]));
+                                        c.write(tag, Message.OK, (Boolean)true);
+                                    }
+                                    catch (Exception e) {
+                                        c.write(tag, Message.ERROR, e);
+                                    }
+                                }
                                 break;
 
                             case Message.SUBSCRIBE:
@@ -223,7 +328,29 @@ class Server{
                             case Message.UNSUBSCRIBE:
                                 break;
 
-                            case Message.GET_USER:
+                            case Message.UPDATE_POSTITION:
+                                if(data.getClass() == User.class){
+                                    User dataUser = ((User) data);
+                                    try {
+                                        updatePosition(dataUser);
+                                        c.write(tag, Message.OK, (Boolean)true);
+                                    }
+                                    catch (Exception e) {
+                                        c.write(tag, Message.ERROR, e);
+                                    }
+                                }
+                                break;
+
+                            case Message.GET_REWARDS:
+                                if (data.getClass() == Pair.class){
+                                    Pair<Integer, Integer> dataPair = (Pair<Integer, Integer>) data;
+                                    try {
+                                        Matrix<Integer> rewards = rewardsInRadius(dataPair);
+                                        c.write(tag, Message.OK, rewards);
+                                    } catch (Exception e) {
+                                        c.write(tag, Message.ERROR, e);
+                                    }
+                                }
                                 break;
 
                             case Message.KILL:
@@ -236,31 +363,31 @@ class Server{
                                             System.exit(0);
                                         }
                                     } catch (User.InvalidUser e) {
-                                        c.write(tag, Message.ERROR, e.getMessage());
+                                        c.write(tag, Message.ERROR, e);
                                     }
                                 }
                                 break;
                             
-                            case Message.VIEW_PROFILE:
+                            case Message.GET_PROFILE:
                                 if (data.getClass() == User.class){
                                     User dataUser = (User) data;
                                     try {
                                         User user = sendUser(dataUser);
                                         c.write(tag, Message.OK, user);
                                     } catch (User.InvalidUser e) {
-                                        c.write(tag, Message.ERROR, e.getMessage());
+                                        c.write(tag, Message.ERROR, e);
                                     }
                                 }
                                 break;
 
-                            case Message.UPDATE_PROFILE:
+                            case Message.SET_PROFILE:
                                 if (data.getClass() == User.class){
                                     User dataUser = (User) data;
                                     try {
                                         Boolean success = updateUser(dataUser);
                                         c.write(tag, Message.OK, success);
                                     } catch (User.InvalidUser e) {
-                                        c.write(tag, Message.ERROR, e.getMessage());
+                                        c.write(tag, Message.ERROR, e);
                                     }
                                 }
                                 break;
@@ -281,9 +408,13 @@ class Server{
     }
 
     public static void main(String[] args) throws Exception {
-        new Server().start();
-        while(true) {
+        try {
+            new Server().start();
+            while(true) {
             Thread.sleep(1000);
+            }
+        }catch (Exception e){
+            Log.all(Log.ERROR, e.getMessage());
         }
     }
 }

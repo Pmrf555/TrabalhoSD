@@ -11,7 +11,7 @@ import Connection.Message;
 import Utilities.Matrix;
 import Utilities.Pair;
 import Utilities.SHA256;
-import Utilities.StringPad;
+import Utilities.StringUtils;
 import Utilities.Rand;
 
 
@@ -19,6 +19,7 @@ public class Client {
     private Integer clientID = Rand.randInt(0, 65535);
     private Lock lock = new ReentrantLock();
     private User user;
+    private Integer scooter;
     private Socket socket;
     private Demultiplexer connection;
     private boolean running;
@@ -27,10 +28,10 @@ public class Client {
         public static final Console console = System.console();
         public static final Integer windowLength = 100;
         public static final Integer windowWidth = 100;
-        public static final String LOGIN_MENU = "1 - Login\n2 - Register\n0 - Exit\n";
-        public static final String MAIN_MENU = "1 - Scooters\n2 - Profile\n3 - Kill Server\n9 - Logout\nQ - Exit\n";
-        public static final String USER_MENU = "1 - View Profile\n2 - Add Funds\n3 - Update Position\n7 - Logout\n0 - Back | Q - Exit\n";
-        public static final String SCOOTER_MENU = "1 - Nearby Scooters\n2 - Reserve Scooter\n3 - Park Scooter\n4 - Subscribe\n5 - Unsubscribe\n6 - Get User\n9 - Logout\n0 - Back | Q - Exit\n";
+        public static final String LOGIN_MENU = "1 - Login\n2 - Register\nQ - Exit\n";
+        public static final String MAIN_MENU = "1 - Scooters\n2 - Profile\n3 - Kill Server\nL - Logout\nQ - Exit\n";
+        public static final String USER_MENU = "1 - View Profile\n2 - Add Funds\n3 - Update Position\nL - Logout\nB - Back | Q - Exit\n";
+        public static final String SCOOTER_MENU = "1 - Nearby Scooters\n2 - Reserve Scooter\n3 - Park Scooter\n4 - Subscribe\n5 - Unsubscribe\nL - Logout\nB - Back | Q - Exit\n";
 
         public static void clear(){
             console.printf("\033[H\033[2J");
@@ -38,22 +39,18 @@ public class Client {
         }
 
         public static void MainMenu(){
-            clear();
             console.printf(MAIN_MENU);
         }
 
         public static void UserMenu(){
-            clear();
             console.printf(USER_MENU);
         }
 
         public static void Login(){
-            clear();
             console.printf(LOGIN_MENU);
         }
 
         public static void ScootersMenu(){
-            clear();
             console.printf(SCOOTER_MENU);
         }
 
@@ -68,29 +65,96 @@ public class Client {
         public static Integer askForInteger(String message){
             return Integer.parseInt(console.readLine(message));
         }
+        public static Double askForDouble(String message){
+            String number = console.readLine(message);
+            try{
+                return Double.parseDouble(number);
+            }
+            catch (NumberFormatException e){
+                if (StringUtils.isNumeric(number)){
+                    return Double.parseDouble(number);
+                }
+                if (number.contains(","))
+                    return Double.parseDouble(number.replace(',', '.'));
+                else
+                    return Double.parseDouble(number+".0");
+            }
+        }
+
+        public static Pair<Integer, Integer> askForPair(String message){
+            String[] pos = console.readLine(message).strip().split(",");
+            return new Pair<Integer, Integer>(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]));
+        }
 
         public static void showUser(User user){
             console.printf("Username: %s \n", user.getUsername());
             console.printf("\tBalance: %f \n", user.getBalance());
             console.printf("\tPosition: (%d, %d) \n", user.getPosition().getL(), user.getPosition().getR());
             console.printf("\tTrips made: %d \n", user.getInvoices().size());
+            console.printf("\tSubscribed: %s \n", user.Subscribed() ? "Yes" : "No");
+            if (user.getDiscountUses() > 0){
+                console.printf("\tDiscount: %f \n", user.getDiscount());
+                console.printf("\tDiscount uses: %d \n", user.getDiscountUses());
+            }
+            if(user.getInvoices().size() > 0){
+                console.printf("\tInvoices: \n");
+                for (Scooter.Invoice i : user.getInvoices()){
+                    console.printf("\tInvoice: %d \n", i.getId());
+                    console.printf("\t\tScooter: %d \n", i.getScooter());
+                    console.printf("\t\tStart: (%d, %d) \n", i.From().getL(), i.From().getR());
+                    console.printf("\t\tEnd: (%d, %d) \n", i.To().getL(), i.To().getR());
+                    console.printf("\t\tCost: %f \n", i.getPrice());
+                    console.printf("\t\tStatus: %s \n", i.getStatus().toString());
+                }
+            }
+
         }
 
-        public static void showScooters(Matrix<List<Scooter>> scooters){
-            Integer size = scooters.dimension();
+        public static void showScootersInRange(Matrix<List<Scooter>> scooters){
             String matrix = "";
-            for(int i = size-1; i >= 0; i--){
-                for(int j = 0; j < size; j++){
-                    List<Scooter> list = scooters.get(i,j);
-                    String mein = "";
-                    String meout = "";
-                    if (i == 2 && j == 2){mein = "\033[0;31m";meout = "\033[0m";} // Put user location in red
-                    matrix += " |" + StringPad.padString(new String( " " + mein + list.size() + " Scooters " + meout), 12) + "|";
+            for (int x = (scooters.dimension()-1); x >= 0; x--){
+                for (int pos = 0; pos < 5; pos ++){
+                    for (int y = 0; y < scooters.dimension(); y++){
+                        String mein = "";
+                        String meout = "";
+                        if (x == 2 && y == 2){mein = "\033[0;31m";meout = "\033[0m";} // Put user location in red
+                        List<Scooter> list = scooters.get(x,y);
+                        if (list != null){
+                            Scooter s = null;
+                            try{
+                                s = list.get(pos);
+                            }catch(Exception e){
+                                s = null;
+                            }
+                            if (s != null){
+                                matrix += " |" + mein + StringUtils.padString(" Scooter" + StringUtils.padString(""+s.getId(),5), 18) + meout + "| ";
+                            }
+                            else
+                                matrix += " |" + mein + StringUtils.padString(new String( " NULL "), 18) + meout + "| ";
+                        }
+                        else
+                            matrix += " |" + mein + StringUtils.padString(new String( " NULL "), 18) + meout + "| ";
+                    }
+                    matrix += "\n";
                 }
                 matrix += "\n";
             }
             console.printf(matrix);
-            Client.ClientView.askForString("Press enter to continue...");
+            Client.ClientView.askForString("\033[0;31m* - User Location\033[0m\nPress enter to continue...");
+        }
+
+        public static void showRewardsInRange(Matrix<Integer> rewards){
+            String matrix = "";
+            for (int x = (rewards.dimension()-1); x >= 0; x--){
+                for (int y = (rewards.dimension()-1); y >= 0; y--){
+                    String mein = "";
+                    String meout = "";
+                    if (x == 2 && y == 2){mein = "\033[0;31m";meout = "\033[0m";} // Put user location in red
+                    matrix += " |" + mein + StringUtils.padString(" Reward" + StringUtils.padString(""+rewards.get(x,y),4), 12) + meout + "| ";
+                }
+                matrix += "\n";
+            }
+            console.printf(matrix);
         }
     }
 
@@ -98,6 +162,7 @@ public class Client {
         this.user = user;
         this.socket = socket;
         this.running = running;
+        this.scooter = null;
         try {
             this.connection = new Demultiplexer(socket);
         } catch (IOException e) {
@@ -110,17 +175,19 @@ public class Client {
         this(null, socket, true);
     }
 
-    public void updateUser(){
+
+
+    public void setUserToServer(String message){
         this.lock.lock();
         Pair<String,Object> response;
         Object data;
         //String command;
         try {
-            this.connection.send(this.clientID, Message.UPDATE_PROFILE,this.user);
+            this.connection.send(this.clientID, message,this.user);
             response = this.connection.receive(this.clientID);
             data = response.getR();
-            if(data.getClass() == User.class){
-                this.user = (User)data;
+            if(data.getClass() == Boolean.class && (Boolean)data){
+                System.err.println("User updated");
             }
             else{
                 System.err.println("Failed to recive confirmation");
@@ -132,8 +199,7 @@ public class Client {
         }
     }
 
-
-    public void updateLocation(){
+    public void randomLocation(){
         Pair<Integer,Integer> newPos = new Pair<Integer,Integer>(Rand.randInt(0, 40), Rand.randInt(0, 40));
         this.lock.lock();
         try{
@@ -142,6 +208,14 @@ public class Client {
         finally{
             this.lock.unlock();
         }        
+    }
+
+    public Integer  getScooter(){
+        return this.scooter;
+    }
+
+    public void setScooter(Integer  scooter){
+        this.scooter = scooter;
     }
 
     public User getUser(){
@@ -271,7 +345,8 @@ public class Client {
         String password = SHA256.getSha256(Client.ClientView.askForPassword("Password: "));
         try{
             if(this.login(username, password)){
-                updateUser();
+                this.setUserToServer(Message.UPDATE_POSTITION);
+                this.getUserFromServer();
                 //Client.ClientView.showUser(this.user);
             }
             else{
@@ -291,6 +366,8 @@ public class Client {
         String password = SHA256.getSha256(Client.ClientView.askForPassword("Password: "));
         try{
             if(this.register(username, password)){
+                this.setUserToServer(Message.SET_PROFILE);
+                this.getUserFromServer();
                 //Client.ClientView.showUser(this.user);
             }
             else{
@@ -311,13 +388,117 @@ public class Client {
             response = this.connection.receive(this.clientID);
             data = response.getR();
             if(data.getClass() == Matrix.class){
-                Client.ClientView.showScooters((Matrix<List<Scooter>>)data);
+                Client.ClientView.showScootersInRange((Matrix<List<Scooter>>)data);
+                this.setUserToServer(Message.SET_PROFILE);
             }
             else{
                 Client.ClientView.askForString("Failed to recive scooters. Press enter to continue.");
             }
         }catch (Exception e){
             return;
+        }
+    }
+
+    public void make_trip(){
+        String scooterID = Client.ClientView.askForString("Scooter ID: ");
+        Pair<String,Object> response;
+        Object data;
+        //String command;
+        try {
+            this.connection.send(this.clientID, Message.RESERVE_SCOOTER,(this.user.getUsername() + "," + this.user.getPassword() + "," + scooterID));
+            response = this.connection.receive(this.clientID);
+            data = response.getR();
+            String command = response.getL();
+            if (command.equals(Message.OK)){
+                if(data.getClass() == String.class){
+                    Client.ClientView.askForString("Scooter Reservation Code: " + (String)data + "\nScooter reserved. Press enter to continue.");
+                    this.setScooter(Integer.parseInt(scooterID));
+                    this.setUserToServer(Message.SET_PROFILE);
+                }
+            }
+            else{
+                Exception e = (Exception)data;
+                Client.ClientView.askForString(e.getMessage());
+            }
+        }catch (Exception e){
+            Client.ClientView.askForString("Failed to reserve scooter. Press enter to continue.");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void rewards(Pair<Integer,Integer> userDestination){
+        Pair<String,Object> response;
+        Object data;
+        //String command;
+        try {
+            this.connection.send(this.clientID, Message.GET_REWARDS,(userDestination));
+            response = this.connection.receive(this.clientID);
+            data = response.getR();
+            String command = response.getL();
+            if (command.equals(Message.OK)){
+                if(data.getClass() == Matrix.class){
+                    Client.ClientView.showRewardsInRange((Matrix<Integer>)data);
+                }
+            }
+            else{
+                Exception e = (Exception)data;
+                Client.ClientView.askForString(e.getMessage());
+            }
+        }catch (Exception e){
+            Client.ClientView.askForString("Failed to get rewards. Press enter to continue.");
+        }
+    }
+
+    public void addFunds(){
+        Double funds = Client.ClientView.askForDouble("How much money do you want to add? ");
+        Client.ClientView.console.printf(this.user.toString());
+        this.user.addBalance(funds);
+        Client.ClientView.console.printf(this.user.toString());
+        this.setUserToServer(Message.SET_PROFILE);
+        Client.ClientView.askForString("Funds added. Press enter to continue.");
+    }
+
+    public void updatePosition(){
+        Pair<Integer,Integer> userDestination = Client.ClientView.askForPair("Where are you? (x,y): ");
+        this.user.setPosition(userDestination);
+        this.setUserToServer(Message.SET_PROFILE);
+        Client.ClientView.askForString("Position updated. Press enter to continue.");
+    }
+
+    public void parkScooter(){
+        Pair<Integer,Integer> userDestination = Client.ClientView.askForPair("Where do you want to park the scooter? (x,y): ");
+        String scooterCode = Client.ClientView.askForString("Scooter Reservation Code: ");
+        Pair<String,Object> response;
+        Object data;
+        String command;
+        boolean park = false;
+        try {
+            while(!park){
+                this.rewards(userDestination);
+                if (!Client.ClientView.askForString("\033[0;31m* - User Destination\033[0m\nDo you want to park the scooter in \033[0;31m(" + userDestination.getL() + ", " + userDestination.getR() + ")\033[0m? (y/N): ").equals("y")){
+                    userDestination = Client.ClientView.askForPair("Where do you want to park the scooter? (x,y): ");
+                }
+                else{
+                    park = true;
+                }
+            }
+            this.connection.send(this.clientID, Message.PARK_SCOOTER,(this.user.getUsername() + "," + scooterCode  + "," + userDestination.getL() + "," + userDestination.getR()));
+            response = this.connection.receive(this.clientID);
+            data = response.getR();
+            command = response.getL();
+            if (command.equals(Message.OK)){
+                if(data.getClass() == Boolean.class && (boolean)data){
+                    Client.ClientView.askForString("Scooter Parked. Press enter to continue.");
+                    this.setScooter(0);
+                    this.getUserFromServer();
+                }
+            }
+            else{
+                Exception e = (Exception)data;
+                Client.ClientView.askForString(e.getMessage());
+            }
+        }catch (Exception e){
+            Client.ClientView.askForString("Failed to park scooter. Press enter to continue.");
         }
     }
 
@@ -329,8 +510,8 @@ public class Client {
             //3 - Park Scooter
             //4 - Subscribe
             //5 - Unsubscribe
-            //9 - Logout
-            //0 - Back | Q - Exit";
+            //L - Logout
+            //B - Back | Q - Exit";
             Client.ClientView.ScootersMenu();
             String option = Client.ClientView.askForString("Option: ");
             switch(option){
@@ -340,11 +521,11 @@ public class Client {
                     break;
                 case "2":
                     // Reserve Scooter
-                    Client.ClientView.askForString("Not Implemented yet. Press enter to continue.");
+                    this.make_trip();
                     break;
                 case "3":
                     // Park Scooter
-                    Client.ClientView.askForString("Not Implemented yet. Press enter to continue.");
+                    this.parkScooter();
                     break;
                 case "4":
                     // Subscribe Rewards
@@ -354,12 +535,12 @@ public class Client {
                     // Unsubscribe Rewards
                     Client.ClientView.askForString("Not Implemented yet. Press enter to continue.");
                     break;
-                case "9":
+                case "l","L":
                     // User Logout
                     this.logout();
                     back = false;
                     break;
-                case "0":
+                case "b","B":
                     // Back a menu
                     back = false;
                     break;
@@ -379,20 +560,40 @@ public class Client {
         boolean back = true;
         while(back && this.user != null){
             Client.ClientView.UserMenu();
+            /*
+            1 - View Profile
+            2 - Add Funds
+            3 - Update Position
+            L - Logout
+            B - Back | Q - Exit
+             */
             String option = Client.ClientView.askForString("Option: ");
             switch(option){
                 case "1":
+                    // View Profile
                     this.viewProfile();
                     break;
-                case "7":
+                case "2":
+                    // Add Funds
+                    this.addFunds();
+                    break;
+                case "3":
+                    // Update Position
+                    this.updatePosition();
+                    break;
+                case "l", "L":
+                    // User Logout
                     this.logout();
                     back = false;
                     break;
-                case "0":
+                case "b", "B":
+                    // Back a menu
                     back = false;
                     break;
                 case "Q", "q":
+                    // Exit Program
                     this.running = false;
+                    back = false;
                     break;
                 default:
                     return;
@@ -400,25 +601,31 @@ public class Client {
         }
     }
 
-    public void viewProfile(){
+    public void getUserFromServer(){
         Pair<String,Object> response;
         Object data;
         //String command;
         try {
-            this.connection.send(this.clientID, Message.VIEW_PROFILE,this.user);
+            this.connection.send(this.clientID, Message.GET_PROFILE,this.user);
             response = this.connection.receive(this.clientID);
             data = response.getR();
         }catch (Exception e){
+            System.out.println(e);
             return;
         }
         if(data.getClass() == User.class){
             this.user = (User)data;
-            Client.ClientView.showUser(this.user);
-            Client.ClientView.askForString("Press enter to continue ...");
         }
         else{
             return;
         }
+
+    }
+
+    public void viewProfile(){
+        this.getUserFromServer();
+        Client.ClientView.showUser(this.user);
+        Client.ClientView.askForString("Press enter to continue ...");
     }
 
     public void main_menu(){
@@ -436,11 +643,12 @@ public class Client {
                 case "3":
                     this.userKill();
                     break;
-                case "9":
+                case "l","L":
                     this.logout();
                     break;
                 case "Q", "q":
                     this.running = false;
+                    back = false;
                     break;
                 default:
                     
@@ -460,7 +668,7 @@ public class Client {
                 case "2":
                     this.userRegister();
                     break;
-                case "0":
+                case "q", "Q":
                     this.running = false;
                     break;
                 default:

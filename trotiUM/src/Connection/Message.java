@@ -13,10 +13,11 @@ public class Message<T> implements Serializable{
     public static final String PARK_SCOOTER = "PARK_SCOOTER";
     public static final String SUBSCRIBE = "SUBSCRIBE";
     public static final String UNSUBSCRIBE = "UNSUBSCRIBE";
-    public static final String GET_USER = "GET_USER";
     public static final String KILL = "KILL";
-    public static final String VIEW_PROFILE = "VIEW_PROFILE";
-    public static final String UPDATE_PROFILE = "UPDATE_PROFILE";
+    public static final String GET_PROFILE = "GET_PROFILE";
+    public static final String SET_PROFILE = "SET_PROFILE";
+    public static final String GET_REWARDS = "GET_REWARDS";
+    public static final String UPDATE_POSTITION = "UPDATE_POSITION";
     
 
     private static final long serialVersionUID = 1L;

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import Utilities.Pair;
 import Utilities.Rand;
-import Utilities.StringPad;
+import Utilities.StringUtils;
 
 public class User implements Serializable {
     private static AtomicInteger idCounter = new AtomicInteger(0);
@@ -14,7 +14,11 @@ public class User implements Serializable {
     private String username;
     private String password;
     private Pair<Integer, Integer> position;
+    private Boolean subscribed;
     private Double balance;
+    private Integer rewards;
+    private Integer discountUses = 0;
+    private Double discount = 1.0;
     private List<Scooter.Invoice> invoices;
 
     public static class InvalidUser extends Exception {
@@ -30,21 +34,25 @@ public class User implements Serializable {
     
     }
 
-    public User(Integer id, String username, String password, Pair<Integer, Integer> position, Double balance, List<Scooter.Invoice> invoices){
+    public User(Integer id, String username, String password, Pair<Integer, Integer> position, Boolean subscribed, Double balance, Integer rewards, List<Scooter.Invoice> invoices){
         this.id = id;
         this.username = username;
         this.password = password;
         this.position = position;
+        this.subscribed = subscribed;
         this.balance = balance;
+        this.rewards = rewards;
+        this.discountUses = Rand.randInt(0, 2 + invoices.size()/2);
         this.invoices = invoices;
+
     }
 
     public User(String username, String password, Pair<Integer, Integer> position, Double balance){
-        this(idCounter.getAndIncrement(), username, password, position, balance,new ArrayList<Scooter.Invoice>());
+        this(idCounter.getAndIncrement(), username, password, position, false, balance,0,new ArrayList<Scooter.Invoice>());
     }
 
     public User(String username, String password, Double balance){
-        this(username, password, new Pair<Integer, Integer>(Rand.randInt(0, 19), Rand.randInt(0, 19)), balance);
+        this(username, password, new Pair<Integer, Integer>(Rand.randInt(0, Server.GRID_DIMENSION-1), Rand.randInt(0, Server.GRID_DIMENSION)), balance);
     }
 
     public User(String username, String password){
@@ -87,6 +95,14 @@ public class User implements Serializable {
         this.position = position;
     }
 
+    public Boolean Subscribed(){
+        return this.subscribed;
+    }
+
+    public void setSubscribed(Boolean subscribed){
+        this.subscribed = subscribed;
+    }
+
     public Double getBalance(){
         return this.balance;
     }
@@ -95,12 +111,74 @@ public class User implements Serializable {
         this.balance = balance;
     }
 
+    public Integer getRewards(){
+        return this.rewards;
+    }
+
+    public void setRewards(Integer rewards){
+        this.rewards = rewards;
+    }
+
+    public Integer getDiscountUses(){
+        return this.discountUses;
+    }
+
+    public void setDiscountUses(Integer discountUses){
+        this.discountUses = discountUses;
+    }
+
+    public Double getDiscount(){
+        this.calculateRewards();
+        return this.discount;
+    }
+
+    public void setDiscount(Double discount){
+        this.discount = discount;
+    }
+
+    public void calculateRewards(){
+        Integer reward = Rand.randInt(-this.rewards, this.rewards);
+        if (Math.abs(reward) < this.rewards/3){
+            this.discount = Double.parseDouble(new String( "0." + Math.abs(reward)));
+        }
+    }
+
     public List<Scooter.Invoice> getInvoices(){
         return this.invoices;
     }
 
     public void setInvoices(List<Scooter.Invoice> invoices){
         this.invoices = invoices;
+    }
+
+    public void addInvoice(Scooter.Invoice invoice){
+        if (this.invoices == null){
+            this.invoices = new ArrayList<Scooter.Invoice>();
+        }
+        this.invoices.add(invoice);
+    }
+
+    public void removeInvoice(Scooter.Invoice invoice){
+        if (this.invoices == null){
+            return;
+        }
+        this.invoices.remove(invoice);
+    }
+
+    public void addBalance(Double balance){
+        this.balance += balance;
+    }
+
+    public void removeBalance(Double balance){
+        this.balance -= balance;
+    }
+
+    public void addReward(Integer reward){
+        this.rewards += reward;
+    }
+
+    public void removeReward(Integer reward){
+        this.rewards -= reward;
     }
 
     public String toString(){
@@ -116,13 +194,16 @@ public class User implements Serializable {
         if (this.checkCredentials(user)){
             this.position = user.getPosition();
             this.balance = user.getBalance();
+            this.rewards = user.getRewards();
+            this.discountUses = user.getDiscountUses();
+            this.discount = user.getDiscount();
             return true;
         }
         return false;
     }
 
     public String server_log_center(){
-        return StringPad.padString(new String("User{" + this.username + ", Pos(" + this.position.getL()+ ", " + this.position.getR() + "), Balance(" + this.balance + ")}"), 50);
+        return StringUtils.padString(new String("User{" + this.username + ", Pos(" + this.position.getL()+ ", " + this.position.getR() + "), Balance(" + this.balance + ")}"), 50);
     }
 
     public String serverLogRight(){
