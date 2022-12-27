@@ -93,8 +93,25 @@ class Server{
         try{
             for (User u : users){
                 if (u.checkCredentials(user)){
-                    u.setPosition(user.getPosition());
+                    //u.setPosition(user.getPosition());
                     u.update(user);
+                    Log.all(Log.INFO,"User " + user.getUsername() + " got updated");
+                    return true;
+                }
+            }
+            throw new User.InvalidUser("User does not exist");
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private Boolean updateUserPosition(User user) throws User.InvalidUser{
+        lock.lock();
+        try{
+            for (User u : users){
+                if (u.checkCredentials(user)){
+                    u.setPosition(user.getPosition());
+                    //u.update(user);
                     Log.all(Log.INFO,"User " + user.getUsername() + " got updated");
                     return true;
                 }
@@ -331,7 +348,7 @@ class Server{
                                 if(data.getClass() == User.class){
                                     User dataUser = ((User) data);
                                     try {
-                                        this.updateUser(dataUser);
+                                        this.updateUserPosition(dataUser);
                                         c.write(tag, Message.OK, (Boolean)true);
                                     }
                                     catch (Exception e) {

@@ -359,6 +359,7 @@ public class Client {
     }
 
     public void logout(){
+        this.setServerUser(Message.SET_PROFILE);
         this.user = null;
         this.clientID = Rand.randInt(0, 65535);
     }
@@ -447,6 +448,7 @@ public class Client {
         }
         if(data.getClass() == Boolean.class && (Boolean)data){
                 this.user = new User(username, password);
+                this.getServerUser();
                 return true;
         }
         else if(data.getClass() == User.InvalidUser.class){
@@ -747,6 +749,7 @@ public class Client {
                 case "Q", "q":
                     this.running = false;
                     back = false;
+                    this.setServerUser(Message.SET_PROFILE);
                     break;
                 default:
                     return;
@@ -793,6 +796,7 @@ public class Client {
                     // Exit Program
                     this.running = false;
                     back = false;
+                    this.setServerUser(Message.SET_PROFILE);
                     break;
                 default:
                     return;
@@ -833,6 +837,7 @@ public class Client {
                     // Exit Program
                     this.running = false;
                     back = false;
+                    this.setServerUser(Message.SET_PROFILE);
                     break;
                 default:
                     break;
