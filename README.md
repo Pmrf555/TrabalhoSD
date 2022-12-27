@@ -75,9 +75,13 @@ Each reward is identified by an origin-destination pair and has an associated re
 - SET_PROFILE - Used to update the profile of a user from the client to the server;
 - GET_PICKUP_REWARDS - Internal protocol, used to ask for the Pickup Rewards if user is Subscribed to the Rewards function; 
 - GET_DROP_REWARDS - Internal protocol, used to ask for the Drop Rewards if user is Subscribed to the Rewards function;
-- UPDATE_POSITION - Internal protocl, used to update the users location in the server.
+- UPDATE_POSITION - Internal protocol, used to update the users location in the server.
 ## Documentation
 
-- [Project Script](trotiUM/resources/Script.pdf)
-- [Project Report](trotiUM/resources/placeholder.md)
+- [Project Script](here/readme.)
+- [Project Report](here/readme.)
 
+
+## Demo
+
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/3hpco_6C0Cc" title="TrotiUM demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
