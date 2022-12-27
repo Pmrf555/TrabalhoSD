@@ -5,6 +5,8 @@ public class Matrix<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     private T[][] matrix;
     private Integer dimension;
+    private Integer userX;
+    private Integer userY;
 
     @SuppressWarnings("unchecked")
     public Matrix(Integer dimension){
@@ -27,6 +29,15 @@ public class Matrix<T> implements Serializable {
             }
         }
         return false;
+    }
+
+    public void setUserPos(Integer x, Integer y){
+        this.userX = x;
+        this.userY = y;
+    }
+
+    public Pair<Integer, Integer> getUserPos(){
+        return new Pair<Integer, Integer>(this.userX, this.userY);
     }
 
     public void set(Integer x, Integer y, T value) throws IndexOutOfBoundsException{

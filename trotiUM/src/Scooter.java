@@ -1,6 +1,6 @@
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.*;
+//import java.util.concurrent.locks.*;
 import java.time.LocalDate;
 import java.io.Serializable;
 
@@ -18,7 +18,7 @@ public class Scooter implements Serializable {
     private Integer y = 0;
     private Boolean beingUsed = false; // false if free, true if being used
     private String lastUser = "";
-    private Lock lock= new ReentrantLock();
+    //private Lock lock= new ReentrantLock();
 
     public static class InvalidScooter extends Exception {
         private static final long serialVersionUID = 1L;
@@ -218,14 +218,12 @@ public class Scooter implements Serializable {
 
     public String aquire(){
         this.beingUsed = true;
-        this.lock.lock();
         return this.reservationCode;
     }
 
     public boolean release(String reservationCode) throws Scooter.InvalidReservationCode{
-        if (((ReentrantLock) this.lock).isHeldByCurrentThread() && this.reservationCode.equals(reservationCode)){
+        if (this.reservationCode.equals(reservationCode)){
             this.beingUsed = false;
-            this.lock.unlock();
             return true;
         }
         else if (!this.reservationCode.equals(reservationCode)){
@@ -237,7 +235,7 @@ public class Scooter implements Serializable {
     public Scooter.Invoice generateInvoice(User user, Pair<Integer, Integer> to){
         Scooter.Invoice.Status paid = Scooter.Invoice.Status.NULL;
         Double price = Scooter.PRICE_PER_KM * Matrix.manhattan(this.x, this.y, to.getL(), to.getR());
-        if(user.getDiscountUses() > 0)
+        if(user.getDiscountUses() > 0 && user.Subscribed())
             price *= user.getDiscount();
             user.setDiscountUses(user.getDiscountUses() - 1);
         if (user.getBalance() < price)
@@ -255,6 +253,10 @@ public class Scooter implements Serializable {
 
     public static void main(String[] args) {
         System.out.println(Scooter.generateRandomReservationCode());
+
+        for(int i = 4; i >= 0; i--){
+            System.out.println(i-Server.RADIUS);
+        }
     }
     
 }

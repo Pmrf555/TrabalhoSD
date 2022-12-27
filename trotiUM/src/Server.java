@@ -22,7 +22,7 @@ class Server{
     public final static int MAX_SCOOTERS = 800;
     public final static int RADIUS = 2;
     private final static User admin = new User("admin", SHA256.getSha256("admin"));
-    private HashMap<User,String> tokens = new HashMap<User,String>();
+    private HashMap<String,String> tokens = new HashMap<String,String>();
     private HashMap<String,Integer> codeId = new HashMap<String,Integer>();
     private ArrayList<User> users = new ArrayList<User>();
     private Lock lock = new ReentrantLock();
@@ -60,45 +60,29 @@ class Server{
         }
     }
 
-    private User getUser(User user){
-        return getUserByUsername(user.getUsername());
+    private User getUser(User user) throws User.InvalidUser{
+        User out = null;
+        lock.lock();
+        try{
+            for (User u : users){
+                if (u.checkCredentials(user)) out = u;
+            }
+            if (out == null) throw new User.InvalidUser("User does not exist");
+            return out;
+        } finally {
+            lock.unlock();
+        }
     }
     
-    private User getUserByUsername(String username){
+    private User getUserByUsername(String username) throws User.InvalidUser{
+        User out = null;
         lock.lock();
         try{
             for (User u : users){
-                if (u.getUsername().equals(username)) return u;
+                if (u.getUsername().equals(username)) out = u;
             }
-            return null;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-
-    private User sendUser(User user) throws User.InvalidUser{
-        lock.lock();
-        try{
-            for (User u : users){
-                if (u.checkCredentials(user)) return u;
-            }
-            throw new User.InvalidUser("User does not exist");
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    private Boolean updatePosition(User user) throws User.InvalidUser{
-        lock.lock();
-        try{
-            for (User u : users){
-                if (u.checkCredentials(user)){
-                    u.setPosition(user.getPosition());
-                    return true;
-                }
-            }
-            throw new User.InvalidUser("User does not exist");
+            if (out == null) throw new User.InvalidUser("User does not exist");
+            return out;
         } finally {
             lock.unlock();
         }
@@ -109,7 +93,10 @@ class Server{
         try{
             for (User u : users){
                 if (u.checkCredentials(user)){
-                    return u.update(user);
+                    u.setPosition(user.getPosition());
+                    u.update(user);
+                    Log.all(Log.INFO,"User " + user.getUsername() + " got updated");
+                    return true;
                 }
             }
             throw new User.InvalidUser("User does not exist");
@@ -118,20 +105,26 @@ class Server{
         }
     }
 
-    private Matrix<Integer> rewardsInRadius(Pair<Integer,Integer> destination) {
-        return state.getRewardsInRadius(destination.getL(), destination.getR()); 
+    private Matrix<Integer> dropRewardsInRadius(Pair<Integer,Integer> destination) {
+        return state.getDropRewardsInRadius(destination.getL(), destination.getR()); 
+    }
+
+    private Matrix<Integer> pickupRewardsInRadius(Pair<Integer,Integer> destination) {
+        return state.getPickupRewardsInRadius(destination.getL(), destination.getR()); 
     }
 
     private Boolean parkScooter(String username, String scooterReservationCode, Integer x, Integer y) throws User.InvalidUser, Scooter.InvalidReservationCode, Scooter.InvalidScooter{
         User user = getUserByUsername(username);
+        if ((tokens.get(username) == null) || (!tokens.get(username).equals(scooterReservationCode))) throw new Scooter.InvalidScooter("Invalid Scooter");
+
         try{
             Integer scooter_id = codeId.get(scooterReservationCode);
             if (scooter_id == null) throw new Scooter.InvalidReservationCode("Invalid Reservation Code");
             user = this.state.parkScooter(user, scooterReservationCode, x, y, state.getById(scooter_id));
             user.setPosition(new Pair<Integer,Integer>(x,y));
-            this.tokens.remove(user);
+            this.tokens.remove(user.getUsername());
             this.codeId.remove(scooterReservationCode);
-            Log.all(Log.INFO,"User " + user.getUsername() + " Parked Scooter " + scooter_id);
+            Log.all(Log.INFO,"User " + user.getUsername() + " parked the scooter " + scooter_id + " at " + x + "," + y);
             return true;
         }
         catch(Exception e){
@@ -143,7 +136,6 @@ class Server{
         if (this.validUser(user)){
             Pair<Integer, Integer> pos = user.getPosition();
             Matrix<List<Scooter>> radius = state.getScootersInRadius(pos.getL(), pos.getR());
-            System.out.println(user);
             Log.all(Log.INFO,"User " + user.getUsername() + " requested scooters in radius");
             return radius;
         }
@@ -158,13 +150,12 @@ class Server{
         if (this.validUser(user)){
             try{
                 user = this.getUser(user);
-                System.out.println(user);
                 response = state.reserveScooter(user, Integer.parseInt(idScooter));
                 Scooter scooter = response.getR();
                 String code = response.getL();
-                this.tokens.put(user, code);
+                this.tokens.put(user.getUsername(), code);
                 Log.all(Log.INFO,"User " + user.getUsername() + " Reservation: Scooter " + scooter.getId());
-                tokens.put(user, code);
+                tokens.put(user.getUsername(), code);
                 codeId.put(code, scooter.getId());
                 return code;
             }catch(Exception e){
@@ -186,6 +177,15 @@ class Server{
             Log.all(Log.EVENT,"User " + user.getUsername() + " attempted to shutdown server");
             throw new User.InvalidUser("Permission Denied");
         }
+    }
+
+    private void interrupt(){
+        Log.all(Log.DEBUG,"Server shutdown, User dump:");
+        for (User user : users){
+            Log.all(Log.DEBUG,user.toString());
+        }
+        Log.all(Log.INFO,"User dump complete, BYE!");
+        System.exit(0);
     }
 
     public boolean register(String username, String password) throws User.InvalidUser{
@@ -231,8 +231,6 @@ class Server{
     }
     @SuppressWarnings("unchecked")
     public void start() throws Exception {
-        Log.line("\n" + StringUtils.padString(" New Server Instance ", 108, '=')+ "\n");
-        Log.all(Log.INFO,"Server started");
         ServerSocket ss = new ServerSocket(Server.PORT);
 
         while(true) {
@@ -241,11 +239,18 @@ class Server{
 
             Runnable worker = () -> {
                 try (c) {
-                    for (;;) {
+                    Boolean running = true;
+                    int tag = -1;
+                    Object data = null;
+                    String command = null;
+                    while (running) {
+                        tag = 0;
+                        data = null;
+                        command = null;
                         TaggedConnection.TaggedMessage frame = c.read();
-                        int tag = frame.getTag();
-                        Object data = frame.getData();
-                        String command = frame.getCommand();
+                        tag = frame.getTag();
+                        data = frame.getData();
+                        command = frame.getCommand();
                         Log.all(Log.EVENT,"Received command: " + command + " from the tag " + tag);
                         switch (command) {
                             case Message.REGISTER:
@@ -321,18 +326,12 @@ class Server{
                                     }
                                 }
                                 break;
-
-                            case Message.SUBSCRIBE:
-                                break;
-
-                            case Message.UNSUBSCRIBE:
-                                break;
-
+                                
                             case Message.UPDATE_POSTITION:
                                 if(data.getClass() == User.class){
                                     User dataUser = ((User) data);
                                     try {
-                                        updatePosition(dataUser);
+                                        this.updateUser(dataUser);
                                         c.write(tag, Message.OK, (Boolean)true);
                                     }
                                     catch (Exception e) {
@@ -341,11 +340,25 @@ class Server{
                                 }
                                 break;
 
-                            case Message.GET_REWARDS:
+                            case Message.GET_PICKUP_REWARDS:
                                 if (data.getClass() == Pair.class){
                                     Pair<Integer, Integer> dataPair = (Pair<Integer, Integer>) data;
                                     try {
-                                        Matrix<Integer> rewards = rewardsInRadius(dataPair);
+                                        Matrix<Integer> rewards = pickupRewardsInRadius(dataPair);
+                                        Log.all(Log.INFO,"Sent the Pickup rewards matrix in range from (" + dataPair.getL() + ", " + dataPair.getR() + ")");
+                                        c.write(tag, Message.OK, rewards);
+                                    } catch (Exception e) {
+                                        c.write(tag, Message.ERROR, e);
+                                    }
+                                }
+                                break;
+
+                            case Message.GET_DROP_REWARDS:
+                                if (data.getClass() == Pair.class){
+                                    Pair<Integer, Integer> dataPair = (Pair<Integer, Integer>) data;
+                                    try {
+                                        Matrix<Integer> rewards = dropRewardsInRadius(dataPair);
+                                        Log.all(Log.INFO,"Sent the drop rewards matrix in range from (" + dataPair.getL() + ", " + dataPair.getR() + ")");
                                         c.write(tag, Message.OK, rewards);
                                     } catch (Exception e) {
                                         c.write(tag, Message.ERROR, e);
@@ -360,7 +373,7 @@ class Server{
                                         if (KILL(dataUser)){
                                             c.write(tag, Message.OK, "Killing server");
                                             ss.close();
-                                            System.exit(0);
+                                            this.interrupt();
                                         }
                                     } catch (User.InvalidUser e) {
                                         c.write(tag, Message.ERROR, e);
@@ -372,7 +385,7 @@ class Server{
                                 if (data.getClass() == User.class){
                                     User dataUser = (User) data;
                                     try {
-                                        User user = sendUser(dataUser);
+                                        User user = getUser(dataUser);
                                         c.write(tag, Message.OK, user);
                                     } catch (User.InvalidUser e) {
                                         c.write(tag, Message.ERROR, e);
@@ -396,7 +409,7 @@ class Server{
                                 break;
 
                         }
-                        Server.ServerView.printUserlist(users);
+                        //Server.ServerView.printUserlist(users);
                     }
                 } catch (Exception ignored) { }
             };
@@ -408,8 +421,11 @@ class Server{
     }
 
     public static void main(String[] args) throws Exception {
+        Log.line("\n" + StringUtils.padString(" New Server Instance ", 108, '=')+ "\n");
+        Log.all(Log.INFO,"Server started");
+        Server server = new Server();
         try {
-            new Server().start();
+            server.start();
             while(true) {
             Thread.sleep(1000);
             }

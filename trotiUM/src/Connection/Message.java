@@ -11,12 +11,11 @@ public class Message<T> implements Serializable{
     public static final String LIST_SCOOTERS = "LIST_SCOOTERS";
     public static final String RESERVE_SCOOTER = "RESERVE_SCOOTER";
     public static final String PARK_SCOOTER = "PARK_SCOOTER";
-    public static final String SUBSCRIBE = "SUBSCRIBE";
-    public static final String UNSUBSCRIBE = "UNSUBSCRIBE";
     public static final String KILL = "KILL";
     public static final String GET_PROFILE = "GET_PROFILE";
     public static final String SET_PROFILE = "SET_PROFILE";
-    public static final String GET_REWARDS = "GET_REWARDS";
+    public static final String GET_PICKUP_REWARDS = "GET_PICKUP_REWARDS";
+    public static final String GET_DROP_REWARDS = "GET_DROP_REWARDS";
     public static final String UPDATE_POSTITION = "UPDATE_POSITION";
     
 

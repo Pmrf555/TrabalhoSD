@@ -128,7 +128,11 @@ public class User implements Serializable {
     }
 
     public Double getDiscount(){
-        this.calculateRewards();
+        if (this.discountUses > 0){
+            return this.discount;
+        }
+        else
+            this.calculateRewards();
         return this.discount;
     }
 
@@ -137,10 +141,19 @@ public class User implements Serializable {
     }
 
     public void calculateRewards(){
-        Integer reward = Rand.randInt(-this.rewards, this.rewards);
-        if (Math.abs(reward) < this.rewards/3){
-            this.discount = Double.parseDouble(new String( "0." + Math.abs(reward)));
+        if (this.rewards > 100){
+            this.rewards = 90;
         }
+        if (this.rewards < 0){
+            this.rewards = 0;
+        }
+        Integer reward = Rand.randInt(this.rewards*-1, this.rewards);
+        if (Math.abs(reward) < this.rewards - Rand.randInt(0, this.rewards )){
+            this.discountUses = Rand.randInt(0, 2 + this.invoices.size()/2);
+            System.out.println(Math.abs(reward));
+            this.discount = 1 - Double.parseDouble(new String( "0." + Math.abs(reward)));
+        }
+        this.discount = 1.0;
     }
 
     public List<Scooter.Invoice> getInvoices(){
@@ -175,6 +188,7 @@ public class User implements Serializable {
 
     public void addReward(Integer reward){
         this.rewards += reward;
+        this.calculateRewards();
     }
 
     public void removeReward(Integer reward){
@@ -182,7 +196,7 @@ public class User implements Serializable {
     }
 
     public String toString(){
-        return "USER(Username: " + this.username + " | Password: " + this.password + " | Position: " + this.position.toString() + " | Balance: " + this.balance + ")";
+        return "USER(Username: " + this.username + " | Balance: " + this.balance + " | Trips: " + this.invoices.size() + ")";
     }
     
 
@@ -192,11 +206,20 @@ public class User implements Serializable {
 
     public boolean update(User user){
         if (this.checkCredentials(user)){
-            this.position = user.getPosition();
             this.balance = user.getBalance();
             this.rewards = user.getRewards();
+            this.subscribed = user.Subscribed();
             this.discountUses = user.getDiscountUses();
             this.discount = user.getDiscount();
+
+            for (Scooter.Invoice invoice : this.invoices){
+                if (invoice.getStatus().equals("PENDING")){
+                    if(this.balance>=invoice.getPrice()){
+                        this.balance -= invoice.getPrice();
+                        invoice.setStatus("PAID");
+                    }
+                }
+            }
             return true;
         }
         return false;
@@ -219,8 +242,27 @@ public class User implements Serializable {
         return this.username.equals(user.getUsername()) && this.password.equals(user.getPassword()) && this.position.equals(user.getPosition()) && this.balance.equals(user.getBalance());
     }
 
+
+    public static Double calculateRewards(Integer rewards){
+        if (rewards > 100){
+            rewards = 90;
+        }
+        if (rewards < 0){
+            rewards = 0;
+        }
+        Integer reward = Rand.randInt(rewards*-1, rewards);
+        if (Math.abs(reward) < rewards - Rand.randInt(0, rewards )){
+            System.out.println(Math.abs(reward));
+            return 1 - Double.parseDouble(new String( "0." + Math.abs(reward)));
+        }
+        return 1.0;
+    }
     public static void main(String[] args) {
-        User user = new User("Migs", "1234", 10.00);
-        System.out.println(user);
+        System.out.println(User.calculateRewards(5) + "\n");
+        System.out.println(User.calculateRewards(12) + "\n");
+        System.out.println(User.calculateRewards(50) + "\n");
+        System.out.println(User.calculateRewards(1) + "\n");
+        System.out.println(User.calculateRewards(100) + "\n");
+        System.out.println(User.calculateRewards(1000) + "\n");
     }
 }

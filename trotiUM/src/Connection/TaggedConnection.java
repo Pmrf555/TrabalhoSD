@@ -74,6 +74,7 @@ public class TaggedConnection implements AutoCloseable {
             this.dataOut.writeUTF(command);
             this.dataOut.writeObject(message);
             this.dataOut.flush();
+            this.dataOut.reset();   // reset the stream to avoid problems with the next write
         } finally {
             this.writeLock.unlock();
         }
