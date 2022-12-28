@@ -1,0 +1,57 @@
+|2022-12-27.00:43:03.784| Log#1 INFO     ->                         Server started                         |
+|2022-12-27.00:43:03.812| Log#2 INFO     ->               Updating distribution and rewards                |
+
+=========================================== New Server Instance ============================================
+|2022-12-27.00:43:11.767| Log#3 EVENT    ->           Received command: LOGIN from the tag 2117            |
+|2022-12-27.00:43:11.767| Log#4 INFO     ->                      User admin logged in                      |
+|2022-12-27.00:43:11.788| Log#5 EVENT    ->      Received command: UPDATE_POSITION from the tag 2117       |
+|2022-12-27.00:43:11.789| Log#6 INFO     ->                     User admin got updated                     |
+|2022-12-27.00:43:11.791| Log#7 EVENT    ->        Received command: GET_PROFILE from the tag 2117         |
+|2022-12-27.00:43:13.592| Log#8 EVENT    ->        Received command: GET_PROFILE from the tag 2117         |
+|2022-12-27.00:43:16.552| Log#9 EVENT    ->        Received command: SET_PROFILE from the tag 2117         |
+|2022-12-27.00:43:16.552| Log#10 INFO    ->                     User admin got updated                     |
+|2022-12-27.00:43:18.227| Log#11 EVENT   ->        Received command: GET_PROFILE from the tag 2117         |
+|2022-12-27.00:43:25.710| Log#12 EVENT   ->            Received command: KILL from the tag 2117            |
+|2022-12-27.00:43:25.710| Log#13 EVENT   ->              User admin requested server shutdown              |
+|2022-12-27.00:43:25.711| Log#14 DEBUG   ->                  Server shutdown, User dump:                   |
+|2022-12-27.00:43:25.712| Log#15 ERROR   ->                         Socket closed                          |
+|2022-12-27.00:43:25.723| Log#16 DEBUG   ->        USER(Username: admin | Balance: 10.0 | Trips: 0)        |
+|2022-12-27.00:43:25.724| Log#17 INFO    ->                    User dump complete, BYE!                    |
+
+=========================================== New Server Instance ============================================
+|2022-12-27.00:44:02.644| Log#1 INFO     ->                         Server started                         |
+|2022-12-27.00:44:02.671| Log#2 INFO     ->               Updating distribution and rewards                |
+|2022-12-27.00:44:07.752| Log#3 EVENT    ->           Received command: LOGIN from the tag 6286            |
+|2022-12-27.00:44:07.753| Log#4 INFO     ->                      User admin logged in                      |
+|2022-12-27.00:44:07.799| Log#5 EVENT    ->      Received command: UPDATE_POSITION from the tag 6286       |
+|2022-12-27.00:44:07.799| Log#6 INFO     ->                     User admin got updated                     |
+|2022-12-27.00:44:07.803| Log#7 EVENT    ->        Received command: GET_PROFILE from the tag 6286         |
+|2022-12-27.00:44:11.621| Log#8 EVENT    ->        Received command: SET_PROFILE from the tag 6286         |
+|2022-12-27.00:44:11.621| Log#9 INFO     ->                     User admin got updated                     |
+|2022-12-27.00:44:15.667| Log#10 EVENT   ->        Received command: SET_PROFILE from the tag 6286         |
+|2022-12-27.00:44:15.668| Log#11 INFO    ->                     User admin got updated                     |
+|2022-12-27.00:44:18.832| Log#12 EVENT   ->     Received command: GET_PICKUP_REWARDS from the tag 6286     |
+|2022-12-27.00:44:18.840| Log#13 INFO    ->     Sent the Pickup rewards matrix in range from (11, 14)      |
+|2022-12-27.00:44:18.849| Log#14 EVENT   ->       Received command: LIST_SCOOTERS from the tag 6286        |
+|2022-12-27.00:44:18.850| Log#15 INFO    ->            User admin requested scooters in radius             |
+|2022-12-27.00:44:23.315| Log#16 EVENT   ->        Received command: SET_PROFILE from the tag 6286         |
+|2022-12-27.00:44:23.315| Log#17 INFO    ->                     User admin got updated                     |
+|2022-12-27.00:44:25.220| Log#18 EVENT   ->      Received command: RESERVE_SCOOTER from the tag 6286       |
+|2022-12-27.00:44:25.223| Log#19 INFO    ->              User admin Reservation: Scooter 153               |
+|2022-12-27.00:44:28.062| Log#20 EVENT   ->        Received command: SET_PROFILE from the tag 6286         |
+|2022-12-27.00:44:28.062| Log#21 INFO    ->                     User admin got updated                     |
+|2022-12-27.00:44:32.674| Log#22 INFO    ->               Updating distribution and rewards                |
+|2022-12-27.00:44:36.055| Log#23 EVENT   ->      Received command: GET_DROP_REWARDS from the tag 6286      |
+|2022-12-27.00:44:36.056| Log#24 INFO    ->       Sent the drop rewards matrix in range from (0, 0)        |
+|2022-12-27.00:44:40.358| Log#25 EVENT   ->      Received command: GET_DROP_REWARDS from the tag 6286      |
+|2022-12-27.00:44:40.358| Log#26 INFO    ->       Sent the drop rewards matrix in range from (1, 1)        |
+|2022-12-27.00:44:43.932| Log#27 EVENT   ->        Received command: PARK_SCOOTER from the tag 6286        |
+|2022-12-27.00:44:43.961| Log#28 INFO    ->            User admin parked the scooter 153 at 1,1            |
+|2022-12-27.00:44:45.753| Log#29 EVENT   ->        Received command: GET_PROFILE from the tag 6286         |
+|2022-12-27.00:44:49.872| Log#30 EVENT   ->        Received command: GET_PROFILE from the tag 6286         |
+|2022-12-27.00:44:57.663| Log#31 EVENT   ->            Received command: KILL from the tag 6286            |
+|2022-12-27.00:44:57.663| Log#32 EVENT   ->              User admin requested server shutdown              |
+|2022-12-27.00:44:57.664| Log#33 DEBUG   ->                  Server shutdown, User dump:                   |
+|2022-12-27.00:44:57.665| Log#34 ERROR   ->                         Socket closed                          |
+|2022-12-27.00:44:57.669| Log#35 DEBUG   ->        USER(Username: admin | Balance: 7.6 | Trips: 1)         |
+|2022-12-27.00:44:57.669| Log#36 INFO    ->                    User dump complete, BYE!                    |
