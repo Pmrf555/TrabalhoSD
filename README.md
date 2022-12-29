@@ -83,4 +83,4 @@ Each reward is identified by an origin-destination pair and has an associated re
 
 
 ## Demo
-[![](https://markdown-videos.deta/youtube/3hpco_6C0Cc)](https://youtu.be/3hpco_6C0Cc)
+[![DEMO](https://img.youtube.com/vi/3hpco_6C0Cc/0.jpg)](https://www.youtube.com/watch?v=3hpco_6C0Cc)
