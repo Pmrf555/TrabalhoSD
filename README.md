@@ -83,5 +83,4 @@ Each reward is identified by an origin-destination pair and has an associated re
 
 
 ## Demo
-
-<video src="https://user-images.githubusercontent.com/55558312/209893535-1474c3a0-7906-4656-b352-2e72ef7828d3.mp4" width=720></video>
+[![](https://markdown-videos.deta/youtube/3hpco_6C0Cc)](https://youtu.be/3hpco_6C0Cc)
