@@ -78,10 +78,10 @@ Each reward is identified by an origin-destination pair and has an associated re
 - UPDATE_POSITION - Internal protocol, used to update the users location in the server.
 ## Documentation
 
-- [Project Script](here/readme.)
-- [Project Report](here/readme.)
+- [Project Script](trotiUM/resources/Script.pdf)
+- [Project Report](trotiUM/resources/placeholder.md)
 
 
 ## Demo
 
-<iframe width="1280" height="720" src="https://www.youtube.com/embed/3hpco_6C0Cc" title="TrotiUM demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+![DEMO](trotiUM/resources/TrotiUM demo.mp4)
