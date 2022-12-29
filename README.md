@@ -84,4 +84,4 @@ Each reward is identified by an origin-destination pair and has an associated re
 
 ## Demo
 
-![DEMO](trotiUM/resources/TrotiUM demo.mp4)
+<video src="https://githubusercontent.com/Pmrf555/TrabalhoSD/main/trotiUM/resources/TrotiUM%20demo.mp4?token=GHSAT0AAAAAAB2ZTJHXPS6K6YWPNXRGH336Y5M6OMA"></video>
