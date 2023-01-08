@@ -18,9 +18,9 @@ import Connection.Message;
 class Server{
     private final static int WORKERS_PER_CONNECTION = 3;
     private final static int PORT = 12345;
-    public final static int GRID_DIMENSION = 20;
-    public final static int MAX_SCOOTERS = 800;
-    public final static int RADIUS = 2;
+    public final static int GRID_DIMENSION = Integer.parseInt(System.getProperty("dimension","20"));
+    public final static int MAX_SCOOTERS = Integer.parseInt(System.getProperty("scooters","800"));
+    public final static int RADIUS = Integer.parseInt(System.getProperty("radius","2"));
     private final static User admin = new User("admin", SHA256.getSha256("admin"));
     private HashMap<String,String> tokens = new HashMap<String,String>();
     private HashMap<String,Integer> codeId = new HashMap<String,Integer>();
@@ -42,6 +42,7 @@ class Server{
 
     public Server(){
         users.add(admin);
+        Log.all(Log.INFO,"Server started with " + GRID_DIMENSION + "x" + GRID_DIMENSION + " grid, " + MAX_SCOOTERS + " scooters and " + RADIUS + " radius");
     }
 
     private boolean isAdmin(User user){
@@ -110,6 +111,8 @@ class Server{
         try{
             for (User u : users){
                 if (u.checkCredentials(user)){
+                    if (user.getPosition().getL() < 0 || user.getPosition().getL() > Server.GRID_DIMENSION || user.getPosition().getR() < 0 || user.getPosition().getR() > Server.GRID_DIMENSION)
+                        throw new User.InvalidUser("User does not have a valid position.\nUserPos: ("+ user.getPosition().getL() + "," + user.getPosition().getR() + ")\nPosition Range ->(0.." + (Server.GRID_DIMENSION-1) + ")");
                     u.setPosition(user.getPosition());
                     //u.update(user);
                     Log.all(Log.INFO,"User " + user.getUsername() + " got updated");

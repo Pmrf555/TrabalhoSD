@@ -53,12 +53,25 @@ public class Client {
             console.printf(SCOOTER_MENU);
         }
 
+        public static boolean askConfirmation(String message){
+            String answer = console.readLine(message);
+            return answer.equals("y") || answer.equals("Y");
+        }
+
         public static String askForString(String message){
             return console.readLine(message);
         }
 
+        public static void showString(String message){
+            console.printf(message);
+        }
+
         public static String askForPassword(String message){
             return new String(console.readPassword(message));
+        }
+
+        public static void showInteger(Integer number){
+            console.printf("%d", number);
         }
 
         public static Integer askForInteger(String message){
@@ -78,6 +91,14 @@ public class Client {
                 else
                     return Double.parseDouble(number+".0");
             }
+        }
+
+        public static void showDouble(Double number){
+            console.printf("%.2f", number);
+        }
+
+        public static void showFloat(Float number){
+            console.printf("%.2f", number);
         }
 
         public static Pair<Integer, Integer> askForPair(String message){
@@ -289,7 +310,7 @@ public class Client {
         this(null, socket, true);
     }
 
-    public void setServerUser(String message){
+    public boolean setServerUser(String message){
         this.lock.lock();
         Pair<String,Object> response;
         Object data;
@@ -302,16 +323,20 @@ public class Client {
             if (command.equals(Message.OK)){
                 if(data.getClass() == Boolean.class && (Boolean)data){
                     //System.err.println("User updated");
+                    return true;
                 }
                 else{
-                    System.err.println("Failed to update user");
+                    System.err.println(((Exception)data).getMessage());
+                    return false;
                 }
             }
             else{
-                System.err.println("Failed to recive confirmation");
+                System.err.println(((Exception)data).getMessage());
+                return false;
             }
         }catch (Exception e){
-            System.err.println("Failed to recive confirmation");
+            System.err.println(e.getMessage());
+            return false;
         }finally{
             this.lock.unlock();
         }
@@ -334,11 +359,11 @@ public class Client {
                 this.user = (User)data;
             }
             else{
-                Client.ClientView.askForString(((Exception)data).toString());
+                Client.ClientView.askForString(((Exception)data).getMessage());
             }
         }
         catch (Exception e){
-                Client.ClientView.askForString(e.toString());
+                Client.ClientView.askForString(e.getMessage());
             }
     }
 
@@ -543,7 +568,7 @@ public class Client {
     }
 
     public void make_trip(){
-        String scooterID = Client.ClientView.askForString("Scooter ID: ");
+        String scooterID = Client.ClientView.askForString("Scooter Price:\n\tPrice Per Minute: 0.01€ \n\tPrice Per Km: 0.10€\n\nScooter ID: ");
         Pair<String,Object> response;
         Object data;
         //String command;
@@ -631,9 +656,19 @@ public class Client {
     }
 
     public void updatePosition(){
-        Pair<Integer,Integer> userDestination = Client.ClientView.askForPair("Where are you? (x,y): ");
-        this.user.setPosition(userDestination);
-        this.setServerUser(Message.SET_PROFILE);
+        Boolean passed = false;
+        Boolean exit = false;
+        Pair<Integer,Integer> userOrigin = this.user.getPosition();
+        Pair<Integer,Integer> userDestination = null;
+        while(!passed && !exit){
+            userDestination = Client.ClientView.askForPair("Where are you? (x,y): ");
+            this.user.setPosition(userDestination);
+            passed = this.setServerUser(Message.UPDATE_POSTITION);
+            if(!passed){
+                this.user.setPosition(userOrigin);
+                exit = !Client.ClientView.askConfirmation("Invalid position.\nTry again? (y/N)");
+            }
+        }
         Client.ClientView.askForString("Position updated. Press enter to continue.");
     }
 
@@ -665,9 +700,11 @@ public class Client {
             command = response.getL();
             if (command.equals(Message.OK)){
                 if(data.getClass() == Boolean.class && (boolean)data){
-                    Client.ClientView.askForString("Scooter Parked. Press enter to continue.");
                     this.setScooter(0);
                     this.getServerUser();
+                    Scooter.Invoice invoice = this.user.getInvoices().get(this.user.getInvoices().size()-1);
+                    
+                    Client.ClientView.askForString(String.format("Price Paid: %.02f€",invoice.getPrice()) + "\nScooter Parked. Press enter to continue.");
                 }
             }
             else{

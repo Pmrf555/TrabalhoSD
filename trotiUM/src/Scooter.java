@@ -221,6 +221,7 @@ public class Scooter implements Serializable {
 
     public String aquire(){
         this.beingUsed = true;
+        this.reservationCode = Scooter.generateRandomReservationCode();
         this.start = System.currentTimeMillis();
         return this.reservationCode;
     }

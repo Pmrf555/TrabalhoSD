@@ -1,160 +1,216 @@
-|2022-12-27.00:43:03.784| Log#1 INFO     ->                         Server started                         |
-|2022-12-27.00:43:03.812| Log#2 INFO     ->               Updating distribution and rewards                |
 
 =========================================== New Server Instance ============================================
-|2022-12-27.00:43:11.767| Log#3 EVENT    ->           Received command: LOGIN from the tag 2117            |
-|2022-12-27.00:43:11.767| Log#4 INFO     ->                      User admin logged in                      |
-|2022-12-27.00:43:11.788| Log#5 EVENT    ->      Received command: UPDATE_POSITION from the tag 2117       |
-|2022-12-27.00:43:11.789| Log#6 INFO     ->                     User admin got updated                     |
-|2022-12-27.00:43:11.791| Log#7 EVENT    ->        Received command: GET_PROFILE from the tag 2117         |
-|2022-12-27.00:43:13.592| Log#8 EVENT    ->        Received command: GET_PROFILE from the tag 2117         |
-|2022-12-27.00:43:16.552| Log#9 EVENT    ->        Received command: SET_PROFILE from the tag 2117         |
-|2022-12-27.00:43:16.552| Log#10 INFO    ->                     User admin got updated                     |
-|2022-12-27.00:43:18.227| Log#11 EVENT   ->        Received command: GET_PROFILE from the tag 2117         |
-|2022-12-27.00:43:25.710| Log#12 EVENT   ->            Received command: KILL from the tag 2117            |
-|2022-12-27.00:43:25.710| Log#13 EVENT   ->              User admin requested server shutdown              |
-|2022-12-27.00:43:25.711| Log#14 DEBUG   ->                  Server shutdown, User dump:                   |
-|2022-12-27.00:43:25.712| Log#15 ERROR   ->                         Socket closed                          |
-|2022-12-27.00:43:25.723| Log#16 DEBUG   ->        USER(Username: admin | Balance: 10.0 | Trips: 0)        |
-|2022-12-27.00:43:25.724| Log#17 INFO    ->                    User dump complete, BYE!                    |
+|2023-01-08.19:33:51.038| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.19:33:51.061| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.19:33:51.067| Log#3 INFO     ->   Server started with 20x20 grid, 800 scooters and 2 radius    |
 
 =========================================== New Server Instance ============================================
-|2022-12-27.00:44:02.644| Log#1 INFO     ->                         Server started                         |
-|2022-12-27.00:44:02.671| Log#2 INFO     ->               Updating distribution and rewards                |
-|2022-12-27.00:44:07.752| Log#3 EVENT    ->           Received command: LOGIN from the tag 6286            |
-|2022-12-27.00:44:07.753| Log#4 INFO     ->                      User admin logged in                      |
-|2022-12-27.00:44:07.799| Log#5 EVENT    ->      Received command: UPDATE_POSITION from the tag 6286       |
-|2022-12-27.00:44:07.799| Log#6 INFO     ->                     User admin got updated                     |
-|2022-12-27.00:44:07.803| Log#7 EVENT    ->        Received command: GET_PROFILE from the tag 6286         |
-|2022-12-27.00:44:11.621| Log#8 EVENT    ->        Received command: SET_PROFILE from the tag 6286         |
-|2022-12-27.00:44:11.621| Log#9 INFO     ->                     User admin got updated                     |
-|2022-12-27.00:44:15.667| Log#10 EVENT   ->        Received command: SET_PROFILE from the tag 6286         |
-|2022-12-27.00:44:15.668| Log#11 INFO    ->                     User admin got updated                     |
-|2022-12-27.00:44:18.832| Log#12 EVENT   ->     Received command: GET_PICKUP_REWARDS from the tag 6286     |
-|2022-12-27.00:44:18.840| Log#13 INFO    ->     Sent the Pickup rewards matrix in range from (11, 14)      |
-|2022-12-27.00:44:18.849| Log#14 EVENT   ->       Received command: LIST_SCOOTERS from the tag 6286        |
-|2022-12-27.00:44:18.850| Log#15 INFO    ->            User admin requested scooters in radius             |
-|2022-12-27.00:44:23.315| Log#16 EVENT   ->        Received command: SET_PROFILE from the tag 6286         |
-|2022-12-27.00:44:23.315| Log#17 INFO    ->                     User admin got updated                     |
-|2022-12-27.00:44:25.220| Log#18 EVENT   ->      Received command: RESERVE_SCOOTER from the tag 6286       |
-|2022-12-27.00:44:25.223| Log#19 INFO    ->              User admin Reservation: Scooter 153               |
-|2022-12-27.00:44:28.062| Log#20 EVENT   ->        Received command: SET_PROFILE from the tag 6286         |
-|2022-12-27.00:44:28.062| Log#21 INFO    ->                     User admin got updated                     |
-|2022-12-27.00:44:32.674| Log#22 INFO    ->               Updating distribution and rewards                |
-|2022-12-27.00:44:36.055| Log#23 EVENT   ->      Received command: GET_DROP_REWARDS from the tag 6286      |
-|2022-12-27.00:44:36.056| Log#24 INFO    ->       Sent the drop rewards matrix in range from (0, 0)        |
-|2022-12-27.00:44:40.358| Log#25 EVENT   ->      Received command: GET_DROP_REWARDS from the tag 6286      |
-|2022-12-27.00:44:40.358| Log#26 INFO    ->       Sent the drop rewards matrix in range from (1, 1)        |
-|2022-12-27.00:44:43.932| Log#27 EVENT   ->        Received command: PARK_SCOOTER from the tag 6286        |
-|2022-12-27.00:44:43.961| Log#28 INFO    ->            User admin parked the scooter 153 at 1,1            |
-|2022-12-27.00:44:45.753| Log#29 EVENT   ->        Received command: GET_PROFILE from the tag 6286         |
-|2022-12-27.00:44:49.872| Log#30 EVENT   ->        Received command: GET_PROFILE from the tag 6286         |
-|2022-12-27.00:44:57.663| Log#31 EVENT   ->            Received command: KILL from the tag 6286            |
-|2022-12-27.00:44:57.663| Log#32 EVENT   ->              User admin requested server shutdown              |
-|2022-12-27.00:44:57.664| Log#33 DEBUG   ->                  Server shutdown, User dump:                   |
-|2022-12-27.00:44:57.665| Log#34 ERROR   ->                         Socket closed                          |
-|2022-12-27.00:44:57.669| Log#35 DEBUG   ->        USER(Username: admin | Balance: 7.6 | Trips: 1)         |
-|2022-12-27.00:44:57.669| Log#36 INFO    ->                    User dump complete, BYE!                    |
+|2023-01-08.19:34:17.515| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.19:34:17.535| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.19:34:17.539| Log#3 INFO     ->   Server started with 20x20 grid, 800 scooters and 2 radius    |
 
 =========================================== New Server Instance ============================================
-|2022-12-30.13:55:52.347| Log#1 INFO     ->                         Server started                         |
-|2022-12-30.13:55:52.367| Log#2 INFO     ->               Updating distribution and rewards                |
-|2022-12-30.13:56:11.464| Log#3 EVENT    ->         Received command: REGISTER from the tag 65535          |
-|2022-12-30.13:56:11.464| Log#4 INFO     ->                     User Miguel registered                     |
-|2022-12-30.13:56:11.479| Log#5 EVENT    ->        Received command: SET_PROFILE from the tag 65535        |
-|2022-12-30.13:56:11.479| Log#6 INFO     ->                    User Miguel got updated                     |
-|2022-12-30.13:56:11.480| Log#7 EVENT    ->        Received command: GET_PROFILE from the tag 65535        |
-|2022-12-30.13:56:18.054| Log#8 EVENT    ->       Received command: LIST_SCOOTERS from the tag 65535       |
-|2022-12-30.13:56:18.055| Log#9 INFO     ->            User Miguel requested scooters in radius            |
-|2022-12-30.13:56:22.368| Log#10 INFO    ->               Updating distribution and rewards                |
-|2022-12-30.13:56:52.369| Log#11 INFO    ->               Updating distribution and rewards                |
-|2022-12-30.13:57:00.709| Log#12 EVENT   ->        Received command: SET_PROFILE from the tag 65535        |
-|2022-12-30.13:57:00.710| Log#13 INFO    ->                    User Miguel got updated                     |
-|2022-12-30.13:57:14.767| Log#14 EVENT   ->        Received command: SET_PROFILE from the tag 65535        |
-|2022-12-30.13:57:14.767| Log#15 INFO    ->                    User Miguel got updated                     |
+|2023-01-08.19:40:08.782| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.19:40:08.801| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.19:40:08.806| Log#3 INFO     ->   Server started with 30x30 grid, 800 scooters and 2 radius    |
 
 =========================================== New Server Instance ============================================
-|2023-01-08.16:46:40.493| Log#1 INFO     ->                         Server started                         |
-|2023-01-08.16:46:40.513| Log#2 INFO     ->               Updating distribution and rewards                |
-|2023-01-08.16:46:58.611| Log#3 EVENT    ->         Received command: REGISTER from the tag 46312          |
-|2023-01-08.16:46:58.612| Log#4 INFO     ->                   User MayorX500 registered                    |
-|2023-01-08.16:46:58.633| Log#5 EVENT    ->        Received command: SET_PROFILE from the tag 46312        |
-|2023-01-08.16:46:58.633| Log#6 INFO     ->                   User MayorX500 got updated                   |
-|2023-01-08.16:46:58.634| Log#7 EVENT    ->        Received command: GET_PROFILE from the tag 46312        |
-|2023-01-08.16:47:03.884| Log#8 EVENT    ->        Received command: SET_PROFILE from the tag 46312        |
-|2023-01-08.16:47:03.884| Log#9 INFO     ->                   User MayorX500 got updated                   |
-|2023-01-08.16:47:09.934| Log#10 EVENT   ->       Received command: LIST_SCOOTERS from the tag 46312       |
-|2023-01-08.16:47:09.935| Log#11 INFO    ->          User MayorX500 requested scooters in radius           |
-|2023-01-08.16:47:10.514| Log#12 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:47:40.515| Log#13 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:48:02.578| Log#14 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
-|2023-01-08.16:48:02.579| Log#15 INFO    ->                   User MayorX500 got updated                   |
-|2023-01-08.16:48:10.478| Log#16 EVENT   ->      Received command: RESERVE_SCOOTER from the tag 46312      |
-|2023-01-08.16:48:10.483| Log#17 INFO    ->            User MayorX500 Reservation: Scooter 608             |
-|2023-01-08.16:48:10.516| Log#18 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:48:15.808| Log#19 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
-|2023-01-08.16:48:15.808| Log#20 INFO    ->                   User MayorX500 got updated                   |
-|2023-01-08.16:48:40.517| Log#21 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:49:10.518| Log#22 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:49:34.237| Log#23 EVENT   ->       Received command: PARK_SCOOTER from the tag 46312        |
-|2023-01-08.16:49:34.254| Log#24 INFO    ->         User MayorX500 parked the scooter 608 at 19,19         |
-|2023-01-08.16:49:35.624| Log#25 EVENT   ->        Received command: GET_PROFILE from the tag 46312        |
-|2023-01-08.16:49:40.144| Log#26 EVENT   ->        Received command: GET_PROFILE from the tag 46312        |
-|2023-01-08.16:49:40.519| Log#27 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:50:10.520| Log#28 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:50:21.239| Log#29 EVENT   ->       Received command: LIST_SCOOTERS from the tag 46312       |
-|2023-01-08.16:50:21.239| Log#30 INFO    ->          User MayorX500 requested scooters in radius           |
-|2023-01-08.16:50:25.639| Log#31 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
-|2023-01-08.16:50:25.639| Log#32 INFO    ->                   User MayorX500 got updated                   |
-|2023-01-08.16:50:28.259| Log#33 EVENT   ->      Received command: RESERVE_SCOOTER from the tag 46312      |
-|2023-01-08.16:50:28.260| Log#34 INFO    ->            User MayorX500 Reservation: Scooter 608             |
-|2023-01-08.16:50:36.360| Log#35 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
-|2023-01-08.16:50:36.360| Log#36 INFO    ->                   User MayorX500 got updated                   |
-|2023-01-08.16:50:40.521| Log#37 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:51:10.522| Log#38 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:51:40.523| Log#39 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:52:10.524| Log#40 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:52:40.525| Log#41 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:53:10.526| Log#42 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:53:40.527| Log#43 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:54:10.528| Log#44 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:54:40.528| Log#45 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:55:10.529| Log#46 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:55:40.530| Log#47 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:56:10.531| Log#48 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:56:40.532| Log#49 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:57:10.533| Log#50 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:57:28.357| Log#51 EVENT   ->       Received command: PARK_SCOOTER from the tag 46312        |
-|2023-01-08.16:57:28.357| Log#52 INFO    ->         User MayorX500 parked the scooter 608 at 14,0          |
-|2023-01-08.16:57:29.385| Log#53 EVENT   ->        Received command: GET_PROFILE from the tag 46312        |
-|2023-01-08.16:57:32.465| Log#54 EVENT   ->        Received command: GET_PROFILE from the tag 46312        |
-|2023-01-08.16:57:40.534| Log#55 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:58:10.534| Log#56 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:58:40.535| Log#57 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:59:10.536| Log#58 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.16:59:40.537| Log#59 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:00:10.538| Log#60 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:00:28.935| Log#61 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
-|2023-01-08.17:00:28.935| Log#62 INFO    ->                   User MayorX500 got updated                   |
-|2023-01-08.17:00:39.902| Log#63 EVENT   ->           Received command: LOGIN from the tag 16801           |
-|2023-01-08.17:00:39.902| Log#64 INFO    ->       User MayorX500 tried to log in with wrong password       |
-|2023-01-08.17:00:40.539| Log#65 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:00:51.717| Log#66 EVENT   ->           Received command: LOGIN from the tag 16801           |
-|2023-01-08.17:00:51.718| Log#67 INFO    ->                    User MayorX500 logged in                    |
-|2023-01-08.17:00:51.722| Log#68 EVENT   ->        Received command: GET_PROFILE from the tag 16801        |
-|2023-01-08.17:00:51.730| Log#69 EVENT   ->      Received command: UPDATE_POSITION from the tag 16801      |
-|2023-01-08.17:00:51.730| Log#70 INFO    ->                   User MayorX500 got updated                   |
-|2023-01-08.17:00:51.731| Log#71 EVENT   ->        Received command: GET_PROFILE from the tag 16801        |
-|2023-01-08.17:01:10.540| Log#72 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:01:40.541| Log#73 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:02:10.542| Log#74 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:02:40.543| Log#75 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:03:10.544| Log#76 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:03:40.545| Log#77 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:04:10.546| Log#78 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:04:40.547| Log#79 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:05:10.548| Log#80 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:05:40.549| Log#81 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:06:10.549| Log#82 INFO    ->               Updating distribution and rewards                |
-|2023-01-08.17:06:19.664| Log#83 EVENT   ->        Received command: SET_PROFILE from the tag 16801        |
-|2023-01-08.17:06:19.664| Log#84 INFO    ->                   User MayorX500 got updated                   |
+|2023-01-08.19:41:21.055| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.19:41:21.074| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.19:41:21.079| Log#3 INFO     ->   Server started with 30x30 grid, 800 scooters and 2 radius    |
+|2023-01-08.19:41:29.756| Log#4 EVENT    ->           Received command: LOGIN from the tag 42818           |
+|2023-01-08.19:41:29.756| Log#5 INFO     ->                      User admin logged in                      |
+|2023-01-08.19:41:29.770| Log#6 EVENT    ->        Received command: GET_PROFILE from the tag 42818        |
+|2023-01-08.19:41:29.773| Log#7 EVENT    ->      Received command: UPDATE_POSITION from the tag 42818      |
+|2023-01-08.19:41:29.773| Log#8 INFO     ->                     User admin got updated                     |
+|2023-01-08.19:41:29.774| Log#9 EVENT    ->        Received command: GET_PROFILE from the tag 42818        |
+|2023-01-08.19:41:31.450| Log#10 EVENT   ->        Received command: GET_PROFILE from the tag 42818        |
+|2023-01-08.19:41:36.906| Log#11 EVENT   ->      Received command: UPDATE_POSITION from the tag 42818      |
+|2023-01-08.19:41:36.907| Log#12 INFO    ->                     User admin got updated                     |
+|2023-01-08.19:41:38.877| Log#13 EVENT   ->        Received command: GET_PROFILE from the tag 42818        |
+|2023-01-08.19:41:48.328| Log#14 EVENT   ->      Received command: UPDATE_POSITION from the tag 42818      |
+|2023-01-08.19:41:48.328| Log#15 INFO    ->                     User admin got updated                     |
+|2023-01-08.19:41:50.689| Log#16 EVENT   ->        Received command: GET_PROFILE from the tag 42818        |
+|2023-01-08.19:41:51.075| Log#17 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:41:56.254| Log#18 EVENT   ->           Received command: KILL from the tag 42818            |
+|2023-01-08.19:41:56.254| Log#19 EVENT   ->              User admin requested server shutdown              |
+|2023-01-08.19:41:56.254| Log#20 DEBUG   ->                  Server shutdown, User dump:                   |
+|2023-01-08.19:41:56.255| Log#21 ERROR   ->                         Socket closed                          |
+|2023-01-08.19:41:56.259| Log#22 DEBUG   ->        USER(Username: admin | Balance: 0.0 | Trips: 0)         |
+|2023-01-08.19:41:56.259| Log#23 INFO    ->                    User dump complete, BYE!                    |
+
+=========================================== New Server Instance ============================================
+|2023-01-08.19:47:08.942| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.19:47:08.962| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.19:47:08.967| Log#3 INFO     ->   Server started with 30x30 grid, 800 scooters and 2 radius    |
+|2023-01-08.19:47:14.546| Log#4 EVENT    ->           Received command: LOGIN from the tag 42839           |
+|2023-01-08.19:47:14.546| Log#5 INFO     ->                      User admin logged in                      |
+|2023-01-08.19:47:14.560| Log#6 EVENT    ->        Received command: GET_PROFILE from the tag 42839        |
+|2023-01-08.19:47:14.563| Log#7 EVENT    ->      Received command: UPDATE_POSITION from the tag 42839      |
+|2023-01-08.19:47:14.563| Log#8 INFO     ->                     User admin got updated                     |
+|2023-01-08.19:47:14.564| Log#9 EVENT    ->        Received command: GET_PROFILE from the tag 42839        |
+|2023-01-08.19:47:38.963| Log#10 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:48:08.965| Log#11 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:48:38.967| Log#12 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:48:58.203| Log#13 EVENT   ->           Received command: LOGIN from the tag 11137           |
+|2023-01-08.19:48:58.204| Log#14 INFO    ->         User admin tried to log in with wrong password         |
+|2023-01-08.19:49:02.100| Log#15 EVENT   ->           Received command: LOGIN from the tag 11137           |
+|2023-01-08.19:49:02.100| Log#16 INFO    ->                      User admin logged in                      |
+|2023-01-08.19:49:02.108| Log#17 EVENT   ->        Received command: GET_PROFILE from the tag 11137        |
+|2023-01-08.19:49:02.111| Log#18 EVENT   ->      Received command: UPDATE_POSITION from the tag 11137      |
+|2023-01-08.19:49:02.111| Log#19 INFO    ->                     User admin got updated                     |
+|2023-01-08.19:49:02.113| Log#20 EVENT   ->        Received command: GET_PROFILE from the tag 11137        |
+|2023-01-08.19:49:03.915| Log#21 EVENT   ->        Received command: GET_PROFILE from the tag 11137        |
+|2023-01-08.19:49:08.968| Log#22 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:49:38.970| Log#23 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:50:08.972| Log#24 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:50:38.973| Log#25 INFO    ->               Updating distribution and rewards                |
+
+=========================================== New Server Instance ============================================
+|2023-01-08.19:50:58.063| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.19:50:58.081| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.19:50:58.086| Log#3 INFO     ->   Server started with 30x30 grid, 800 scooters and 2 radius    |
+|2023-01-08.19:51:05.061| Log#4 EVENT    ->           Received command: LOGIN from the tag 4248            |
+|2023-01-08.19:51:05.061| Log#5 INFO     ->                      User admin logged in                      |
+|2023-01-08.19:51:05.078| Log#6 EVENT    ->        Received command: GET_PROFILE from the tag 4248         |
+|2023-01-08.19:51:05.082| Log#7 EVENT    ->      Received command: UPDATE_POSITION from the tag 4248       |
+|2023-01-08.19:51:05.082| Log#8 INFO     ->                     User admin got updated                     |
+|2023-01-08.19:51:05.083| Log#9 EVENT    ->        Received command: GET_PROFILE from the tag 4248         |
+|2023-01-08.19:51:28.083| Log#10 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:51:58.084| Log#11 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:52:28.086| Log#12 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:52:58.088| Log#13 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:53:28.089| Log#14 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:53:58.091| Log#15 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:54:28.092| Log#16 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:54:58.094| Log#17 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:55:28.096| Log#18 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:55:58.097| Log#19 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:56:28.099| Log#20 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:56:58.100| Log#21 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:57:28.102| Log#22 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:57:58.103| Log#23 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:58:28.105| Log#24 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:58:58.107| Log#25 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:59:28.108| Log#26 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.19:59:58.109| Log#27 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:00:28.111| Log#28 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:00:58.112| Log#29 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:01:28.114| Log#30 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:01:58.116| Log#31 INFO    ->               Updating distribution and rewards                |
+
+=========================================== New Server Instance ============================================
+|2023-01-08.20:02:02.969| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.20:02:02.988| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.20:02:02.993| Log#3 INFO     ->   Server started with 30x30 grid, 800 scooters and 2 radius    |
+|2023-01-08.20:02:08.793| Log#4 EVENT    ->           Received command: LOGIN from the tag 34497           |
+|2023-01-08.20:02:08.794| Log#5 INFO     ->                      User admin logged in                      |
+|2023-01-08.20:02:08.807| Log#6 EVENT    ->        Received command: GET_PROFILE from the tag 34497        |
+|2023-01-08.20:02:08.810| Log#7 EVENT    ->      Received command: UPDATE_POSITION from the tag 34497      |
+|2023-01-08.20:02:08.810| Log#8 INFO     ->                     User admin got updated                     |
+|2023-01-08.20:02:08.811| Log#9 EVENT    ->        Received command: GET_PROFILE from the tag 34497        |
+|2023-01-08.20:02:15.303| Log#10 EVENT   ->      Received command: UPDATE_POSITION from the tag 34497      |
+|2023-01-08.20:02:21.128| Log#11 EVENT   ->      Received command: UPDATE_POSITION from the tag 34497      |
+|2023-01-08.20:02:21.128| Log#12 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:02:30.549| Log#13 EVENT   ->      Received command: UPDATE_POSITION from the tag 34497      |
+|2023-01-08.20:02:30.549| Log#14 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:02:32.990| Log#15 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:03:02.991| Log#16 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:03:30.404| Log#17 EVENT   ->           Received command: LOGIN from the tag 27056           |
+|2023-01-08.20:03:30.404| Log#18 INFO    ->                      User admin logged in                      |
+|2023-01-08.20:03:30.411| Log#19 EVENT   ->        Received command: GET_PROFILE from the tag 27056        |
+|2023-01-08.20:03:30.412| Log#20 EVENT   ->      Received command: UPDATE_POSITION from the tag 27056      |
+|2023-01-08.20:03:30.413| Log#21 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:03:30.414| Log#22 EVENT   ->        Received command: GET_PROFILE from the tag 27056        |
+|2023-01-08.20:03:32.993| Log#23 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:03:34.239| Log#24 EVENT   ->      Received command: UPDATE_POSITION from the tag 27056      |
+|2023-01-08.20:03:34.239| Log#25 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:04:02.994| Log#26 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:04:15.533| Log#27 EVENT   ->           Received command: LOGIN from the tag 14694           |
+|2023-01-08.20:04:15.533| Log#28 INFO    ->                      User admin logged in                      |
+|2023-01-08.20:04:15.538| Log#29 EVENT   ->        Received command: GET_PROFILE from the tag 14694        |
+|2023-01-08.20:04:15.540| Log#30 EVENT   ->      Received command: UPDATE_POSITION from the tag 14694      |
+|2023-01-08.20:04:15.540| Log#31 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:04:15.541| Log#32 EVENT   ->        Received command: GET_PROFILE from the tag 14694        |
+|2023-01-08.20:04:18.888| Log#33 EVENT   ->      Received command: UPDATE_POSITION from the tag 14694      |
+|2023-01-08.20:04:18.888| Log#34 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:04:22.107| Log#35 EVENT   ->        Received command: GET_PROFILE from the tag 14694        |
+|2023-01-08.20:04:32.996| Log#36 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:04:33.493| Log#37 EVENT   ->        Received command: SET_PROFILE from the tag 14694        |
+|2023-01-08.20:04:33.493| Log#38 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:04:38.772| Log#39 EVENT   ->           Received command: LOGIN from the tag 25371           |
+|2023-01-08.20:04:38.772| Log#40 INFO    ->                      User admin logged in                      |
+|2023-01-08.20:04:38.784| Log#41 EVENT   ->        Received command: GET_PROFILE from the tag 25371        |
+|2023-01-08.20:04:38.787| Log#42 EVENT   ->      Received command: UPDATE_POSITION from the tag 25371      |
+|2023-01-08.20:04:38.787| Log#43 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:04:38.788| Log#44 EVENT   ->        Received command: GET_PROFILE from the tag 25371        |
+|2023-01-08.20:04:40.296| Log#45 EVENT   ->        Received command: GET_PROFILE from the tag 25371        |
+|2023-01-08.20:04:45.231| Log#46 EVENT   ->      Received command: UPDATE_POSITION from the tag 25371      |
+|2023-01-08.20:05:02.997| Log#47 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:05:32.999| Log#48 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:06:03.001| Log#49 INFO    ->               Updating distribution and rewards                |
+
+=========================================== New Server Instance ============================================
+|2023-01-08.20:08:09.805| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.20:08:09.824| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.20:08:09.829| Log#3 INFO     ->   Server started with 30x30 grid, 800 scooters and 2 radius    |
+|2023-01-08.20:08:17.622| Log#4 EVENT    ->           Received command: LOGIN from the tag 63109           |
+|2023-01-08.20:08:17.623| Log#5 INFO     ->                      User admin logged in                      |
+|2023-01-08.20:08:17.636| Log#6 EVENT    ->        Received command: GET_PROFILE from the tag 63109        |
+|2023-01-08.20:08:17.639| Log#7 EVENT    ->      Received command: UPDATE_POSITION from the tag 63109      |
+|2023-01-08.20:08:17.639| Log#8 INFO     ->                     User admin got updated                     |
+|2023-01-08.20:08:17.640| Log#9 EVENT    ->        Received command: GET_PROFILE from the tag 63109        |
+|2023-01-08.20:08:21.276| Log#10 EVENT   ->      Received command: UPDATE_POSITION from the tag 63109      |
+|2023-01-08.20:08:37.984| Log#11 EVENT   ->      Received command: UPDATE_POSITION from the tag 63109      |
+|2023-01-08.20:08:37.984| Log#12 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:08:39.825| Log#13 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:08:40.542| Log#14 EVENT   ->        Received command: SET_PROFILE from the tag 63109        |
+|2023-01-08.20:08:40.543| Log#15 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:09:09.827| Log#16 INFO    ->               Updating distribution and rewards                |
+
+=========================================== New Server Instance ============================================
+|2023-01-08.20:09:21.409| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.20:09:21.428| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.20:09:21.434| Log#3 INFO     ->   Server started with 30x30 grid, 800 scooters and 2 radius    |
+|2023-01-08.20:09:25.083| Log#4 EVENT    ->           Received command: LOGIN from the tag 14023           |
+|2023-01-08.20:09:25.083| Log#5 INFO     ->                      User admin logged in                      |
+|2023-01-08.20:09:25.100| Log#6 EVENT    ->        Received command: GET_PROFILE from the tag 14023        |
+|2023-01-08.20:09:25.104| Log#7 EVENT    ->      Received command: UPDATE_POSITION from the tag 14023      |
+|2023-01-08.20:09:25.104| Log#8 INFO     ->                     User admin got updated                     |
+|2023-01-08.20:09:25.105| Log#9 EVENT    ->        Received command: GET_PROFILE from the tag 14023        |
+|2023-01-08.20:09:29.996| Log#10 EVENT   ->      Received command: UPDATE_POSITION from the tag 14023      |
+|2023-01-08.20:09:51.429| Log#11 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:10:21.431| Log#12 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:10:51.432| Log#13 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:11:21.434| Log#14 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:11:51.435| Log#15 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:12:21.437| Log#16 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.20:12:51.438| Log#17 INFO    ->               Updating distribution and rewards                |
+
+=========================================== New Server Instance ============================================
+|2023-01-08.20:13:16.045| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.20:13:16.064| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.20:13:16.068| Log#3 INFO     ->   Server started with 30x30 grid, 800 scooters and 2 radius    |
+|2023-01-08.20:13:20.618| Log#4 EVENT    ->           Received command: LOGIN from the tag 46093           |
+|2023-01-08.20:13:20.618| Log#5 INFO     ->                      User admin logged in                      |
+|2023-01-08.20:13:20.633| Log#6 EVENT    ->        Received command: GET_PROFILE from the tag 46093        |
+|2023-01-08.20:13:20.636| Log#7 EVENT    ->      Received command: UPDATE_POSITION from the tag 46093      |
+|2023-01-08.20:13:20.636| Log#8 INFO     ->                     User admin got updated                     |
+|2023-01-08.20:13:20.637| Log#9 EVENT    ->        Received command: GET_PROFILE from the tag 46093        |
+|2023-01-08.20:13:24.678| Log#10 EVENT   ->      Received command: UPDATE_POSITION from the tag 46093      |
+|2023-01-08.20:13:34.927| Log#11 EVENT   ->      Received command: UPDATE_POSITION from the tag 46093      |
+|2023-01-08.20:13:34.927| Log#12 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:13:37.135| Log#13 EVENT   ->        Received command: SET_PROFILE from the tag 46093        |
+|2023-01-08.20:13:37.135| Log#14 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:13:42.685| Log#15 EVENT   ->           Received command: LOGIN from the tag 17801           |
+|2023-01-08.20:13:42.685| Log#16 INFO    ->                      User admin logged in                      |
+|2023-01-08.20:13:42.695| Log#17 EVENT   ->        Received command: GET_PROFILE from the tag 17801        |
+|2023-01-08.20:13:42.698| Log#18 EVENT   ->      Received command: UPDATE_POSITION from the tag 17801      |
+|2023-01-08.20:13:42.699| Log#19 INFO    ->                     User admin got updated                     |
+|2023-01-08.20:13:42.700| Log#20 EVENT   ->        Received command: GET_PROFILE from the tag 17801        |
+|2023-01-08.20:13:43.679| Log#21 EVENT   ->           Received command: KILL from the tag 17801            |
+|2023-01-08.20:13:43.679| Log#22 EVENT   ->              User admin requested server shutdown              |
+|2023-01-08.20:13:43.679| Log#23 DEBUG   ->                  Server shutdown, User dump:                   |
+|2023-01-08.20:13:43.680| Log#24 ERROR   ->                         Socket closed                          |
+|2023-01-08.20:13:43.680| Log#25 DEBUG   ->        USER(Username: admin | Balance: 0.0 | Trips: 0)         |
+|2023-01-08.20:13:43.680| Log#26 INFO    ->                    User dump complete, BYE!                    |
