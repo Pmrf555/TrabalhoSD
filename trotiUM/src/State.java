@@ -30,6 +30,7 @@ public class State {
     }
 
     public State(Integer gridDimension, Integer radius, Integer totalScooters){
+        
         this.totalScooters = totalScooters;
         this.gridDimension = gridDimension;
         this.radius = radius;
@@ -38,12 +39,14 @@ public class State {
         this.scooterDistribution = new Matrix<Integer>(gridDimension);
         this.scooterDropRewards = new Matrix<Integer>(gridDimension);
         this.scooterPickupRewards = new Matrix<Integer>(gridDimension);
+        
         this.generateScooters();
         this.generateMap();
         this.generateAll();
     }
 
     public State(){
+        // initialize the state by calling the 3-parameter constructor
         this(1,1,1);
     }
 
@@ -114,6 +117,8 @@ public class State {
     }
 
     public void generateScooters(){
+    // Generate random scooters in the city, based on the number of scooters
+    // and the size of the city.
         for(int i = 0; i < this.totalScooters; i++){
             Integer x = Rand.randInt(0, this.gridDimension - 1);
             Integer y = Rand.randInt(0, this.gridDimension - 1);
@@ -121,7 +126,7 @@ public class State {
         }
     }
 
-    public void generateMap(){
+    public void generateMap(){      
         for(Scooter scooter : this.scooterList){
             Pair<Integer, Integer> pos = scooter.getPos();
             this.addScooterToGrid(scooter, pos.getL(), pos.getR());
@@ -273,12 +278,6 @@ public class State {
         int end_x = x+this.radius;
         int start_y = y-this.radius;
         int end_y = y+this.radius;
-        /*
-        * if (x-this.radius <= 0){start_x = ; }
-        * if (x+this.radius > this.gridDimension-1){end_x = this.gridDimension-1; }
-        * if (y-this.radius <= 0){start_y = 0; }
-        * if (y+this.radius > this.gridDimension-1){end_y = this.gridDimension-1; }
-        */
         this.lock.lock();
         try{
             scootersInRadius.setUserPos(x-start_x, y-start_y);
@@ -316,12 +315,6 @@ public class State {
         int end_x = x+this.radius;
         int start_y = y-this.radius;
         int end_y = y+this.radius;
-        /*
-        * if (x-this.radius <= 0){start_x = ; }
-        * if (x+this.radius > this.gridDimension-1){end_x = this.gridDimension-1; }
-        * if (y-this.radius <= 0){start_y = 0; }
-        * if (y+this.radius > this.gridDimension-1){end_y = this.gridDimension-1; }
-        */
         this.lock.lock();
         try{
             rewardsInRadius.setUserPos(x-start_x, y-start_y);
@@ -351,12 +344,6 @@ public class State {
         int end_x = x+this.radius;
         int start_y = y-this.radius;
         int end_y = y+this.radius;
-        /*
-        * if (x-this.radius <= 0){start_x = ; }
-        * if (x+this.radius > this.gridDimension-1){end_x = this.gridDimension-1; }
-        * if (y-this.radius <= 0){start_y = 0; }
-        * if (y+this.radius > this.gridDimension-1){end_y = this.gridDimension-1; }
-        */
         this.lock.lock();
         try{
             pickupRewardsInRadius.setUserPos(x-start_x, y-start_y);
@@ -464,98 +451,3 @@ public class State {
     }
 
 }
-/*
-        void existemTrotinetesProximas(Integer x1,Integer y1,PrintWriter out){//envia para o cliente as posições das trotinetes
-            Integer number1 = 0,number2 = 0;
-            try{
-                lock.lock();
-            
-            while(number1<N){
-                while(number2<N){
-                    if((Math.abs(x1-number1 + Math.abs(y1-number2))<=D) && mapa[number1][number2].size() >= 1) {
-                        out.write(number1);out.flush();
-                        out.write(number2);out.flush();
-                        
-                    }
-                    number2++;
-                }
-                number2=0;
-                number1++;
-            }
-            }finally{
-                lock.unlock();
-            }
-        }
-    
-        void listaRecompensas(Integer x1,Integer y1,PrintWriter out){//envia para o cliente as posições das recompensas e o seu valor
-            Integer number1 = 0,number2 = 0;
-            try{
-                lock.lock();
-            
-            while(number1<N){
-                while(number2<N){
-                    if((Math.abs(x1-number1 + Math.abs(y1-number2))<=D) && mapaRecompensas[number1][number2] >= 1) {
-                        out.write(number1);out.flush();
-                        out.write(number2);out.flush();
-                        out.write(mapaRecompensas[number1][number2]);out.flush();
-                    }
-                    number2++;
-                }
-                number2=0;
-                number1++;
-            }
-        }finally{
-            lock.unlock();
-        }
-        }
-        int[] trotineteMaisProx(Integer x,Integer y){//retorna uma lista com o x e o y da trotinete mais próxima
-            Integer number1 = 0,number2 = 0,flag = 0;
-            int[] res = new int[2];
-            while(number1<N && flag == 1){
-                while(number2<N && flag == 1){
-                    if((Math.abs(x-number1 + Math.abs(y-number2))<=D) && mapa[number1][number2].size() >= 1) {
-                        res[0] = number1;
-                        res[1] = number2;
-                        flag = 1;
-                    }
-                    number2++;
-                }
-                number2=0;
-                number1++;
-            }
-            return res;
-        }
-        void reservaTrotinete(Integer x,Integer y,PrintWriter out){
-            try{
-                lock.lock();
-            
-            int[] pos = trotineteMaisProx(x, y);
-            if (mapa[pos[0]][pos[1]].get(0).estado == 0) {
-                mapa[pos[0]][pos[1]].get(0).reserva();
-                mapa[pos[0]][pos[1]].remove(0);
-                out.write("O código de reserva é" +  mapa[pos[0]][pos[1]].get(0).codReserva);out.flush();
-            }
-            else{
-                out.write("Código de insucesso" + 0);out.flush();
-            }
-        }finally{
-            lock.unlock();
-        }
-        }
-    
-        void estacionaTrotinete(Integer codRes,Integer x,Integer y,PrintWriter out){
-            trotinete p = listaTrotinetes.get(codRes);
-            p.larga();
-            try{
-                lock.lock();
-                mapa[x][y].add(p);
-    
-            }finally{
-                lock.unlock();
-            }
-    
-        }
-    
-    
-}
-*/

@@ -55,3 +55,106 @@
 |2022-12-27.00:44:57.665| Log#34 ERROR   ->                         Socket closed                          |
 |2022-12-27.00:44:57.669| Log#35 DEBUG   ->        USER(Username: admin | Balance: 7.6 | Trips: 1)         |
 |2022-12-27.00:44:57.669| Log#36 INFO    ->                    User dump complete, BYE!                    |
+
+=========================================== New Server Instance ============================================
+|2022-12-30.13:55:52.347| Log#1 INFO     ->                         Server started                         |
+|2022-12-30.13:55:52.367| Log#2 INFO     ->               Updating distribution and rewards                |
+|2022-12-30.13:56:11.464| Log#3 EVENT    ->         Received command: REGISTER from the tag 65535          |
+|2022-12-30.13:56:11.464| Log#4 INFO     ->                     User Miguel registered                     |
+|2022-12-30.13:56:11.479| Log#5 EVENT    ->        Received command: SET_PROFILE from the tag 65535        |
+|2022-12-30.13:56:11.479| Log#6 INFO     ->                    User Miguel got updated                     |
+|2022-12-30.13:56:11.480| Log#7 EVENT    ->        Received command: GET_PROFILE from the tag 65535        |
+|2022-12-30.13:56:18.054| Log#8 EVENT    ->       Received command: LIST_SCOOTERS from the tag 65535       |
+|2022-12-30.13:56:18.055| Log#9 INFO     ->            User Miguel requested scooters in radius            |
+|2022-12-30.13:56:22.368| Log#10 INFO    ->               Updating distribution and rewards                |
+|2022-12-30.13:56:52.369| Log#11 INFO    ->               Updating distribution and rewards                |
+|2022-12-30.13:57:00.709| Log#12 EVENT   ->        Received command: SET_PROFILE from the tag 65535        |
+|2022-12-30.13:57:00.710| Log#13 INFO    ->                    User Miguel got updated                     |
+|2022-12-30.13:57:14.767| Log#14 EVENT   ->        Received command: SET_PROFILE from the tag 65535        |
+|2022-12-30.13:57:14.767| Log#15 INFO    ->                    User Miguel got updated                     |
+
+=========================================== New Server Instance ============================================
+|2023-01-08.16:46:40.493| Log#1 INFO     ->                         Server started                         |
+|2023-01-08.16:46:40.513| Log#2 INFO     ->               Updating distribution and rewards                |
+|2023-01-08.16:46:58.611| Log#3 EVENT    ->         Received command: REGISTER from the tag 46312          |
+|2023-01-08.16:46:58.612| Log#4 INFO     ->                   User MayorX500 registered                    |
+|2023-01-08.16:46:58.633| Log#5 EVENT    ->        Received command: SET_PROFILE from the tag 46312        |
+|2023-01-08.16:46:58.633| Log#6 INFO     ->                   User MayorX500 got updated                   |
+|2023-01-08.16:46:58.634| Log#7 EVENT    ->        Received command: GET_PROFILE from the tag 46312        |
+|2023-01-08.16:47:03.884| Log#8 EVENT    ->        Received command: SET_PROFILE from the tag 46312        |
+|2023-01-08.16:47:03.884| Log#9 INFO     ->                   User MayorX500 got updated                   |
+|2023-01-08.16:47:09.934| Log#10 EVENT   ->       Received command: LIST_SCOOTERS from the tag 46312       |
+|2023-01-08.16:47:09.935| Log#11 INFO    ->          User MayorX500 requested scooters in radius           |
+|2023-01-08.16:47:10.514| Log#12 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:47:40.515| Log#13 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:48:02.578| Log#14 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
+|2023-01-08.16:48:02.579| Log#15 INFO    ->                   User MayorX500 got updated                   |
+|2023-01-08.16:48:10.478| Log#16 EVENT   ->      Received command: RESERVE_SCOOTER from the tag 46312      |
+|2023-01-08.16:48:10.483| Log#17 INFO    ->            User MayorX500 Reservation: Scooter 608             |
+|2023-01-08.16:48:10.516| Log#18 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:48:15.808| Log#19 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
+|2023-01-08.16:48:15.808| Log#20 INFO    ->                   User MayorX500 got updated                   |
+|2023-01-08.16:48:40.517| Log#21 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:49:10.518| Log#22 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:49:34.237| Log#23 EVENT   ->       Received command: PARK_SCOOTER from the tag 46312        |
+|2023-01-08.16:49:34.254| Log#24 INFO    ->         User MayorX500 parked the scooter 608 at 19,19         |
+|2023-01-08.16:49:35.624| Log#25 EVENT   ->        Received command: GET_PROFILE from the tag 46312        |
+|2023-01-08.16:49:40.144| Log#26 EVENT   ->        Received command: GET_PROFILE from the tag 46312        |
+|2023-01-08.16:49:40.519| Log#27 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:50:10.520| Log#28 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:50:21.239| Log#29 EVENT   ->       Received command: LIST_SCOOTERS from the tag 46312       |
+|2023-01-08.16:50:21.239| Log#30 INFO    ->          User MayorX500 requested scooters in radius           |
+|2023-01-08.16:50:25.639| Log#31 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
+|2023-01-08.16:50:25.639| Log#32 INFO    ->                   User MayorX500 got updated                   |
+|2023-01-08.16:50:28.259| Log#33 EVENT   ->      Received command: RESERVE_SCOOTER from the tag 46312      |
+|2023-01-08.16:50:28.260| Log#34 INFO    ->            User MayorX500 Reservation: Scooter 608             |
+|2023-01-08.16:50:36.360| Log#35 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
+|2023-01-08.16:50:36.360| Log#36 INFO    ->                   User MayorX500 got updated                   |
+|2023-01-08.16:50:40.521| Log#37 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:51:10.522| Log#38 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:51:40.523| Log#39 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:52:10.524| Log#40 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:52:40.525| Log#41 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:53:10.526| Log#42 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:53:40.527| Log#43 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:54:10.528| Log#44 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:54:40.528| Log#45 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:55:10.529| Log#46 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:55:40.530| Log#47 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:56:10.531| Log#48 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:56:40.532| Log#49 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:57:10.533| Log#50 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:57:28.357| Log#51 EVENT   ->       Received command: PARK_SCOOTER from the tag 46312        |
+|2023-01-08.16:57:28.357| Log#52 INFO    ->         User MayorX500 parked the scooter 608 at 14,0          |
+|2023-01-08.16:57:29.385| Log#53 EVENT   ->        Received command: GET_PROFILE from the tag 46312        |
+|2023-01-08.16:57:32.465| Log#54 EVENT   ->        Received command: GET_PROFILE from the tag 46312        |
+|2023-01-08.16:57:40.534| Log#55 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:58:10.534| Log#56 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:58:40.535| Log#57 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:59:10.536| Log#58 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.16:59:40.537| Log#59 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:00:10.538| Log#60 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:00:28.935| Log#61 EVENT   ->        Received command: SET_PROFILE from the tag 46312        |
+|2023-01-08.17:00:28.935| Log#62 INFO    ->                   User MayorX500 got updated                   |
+|2023-01-08.17:00:39.902| Log#63 EVENT   ->           Received command: LOGIN from the tag 16801           |
+|2023-01-08.17:00:39.902| Log#64 INFO    ->       User MayorX500 tried to log in with wrong password       |
+|2023-01-08.17:00:40.539| Log#65 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:00:51.717| Log#66 EVENT   ->           Received command: LOGIN from the tag 16801           |
+|2023-01-08.17:00:51.718| Log#67 INFO    ->                    User MayorX500 logged in                    |
+|2023-01-08.17:00:51.722| Log#68 EVENT   ->        Received command: GET_PROFILE from the tag 16801        |
+|2023-01-08.17:00:51.730| Log#69 EVENT   ->      Received command: UPDATE_POSITION from the tag 16801      |
+|2023-01-08.17:00:51.730| Log#70 INFO    ->                   User MayorX500 got updated                   |
+|2023-01-08.17:00:51.731| Log#71 EVENT   ->        Received command: GET_PROFILE from the tag 16801        |
+|2023-01-08.17:01:10.540| Log#72 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:01:40.541| Log#73 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:02:10.542| Log#74 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:02:40.543| Log#75 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:03:10.544| Log#76 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:03:40.545| Log#77 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:04:10.546| Log#78 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:04:40.547| Log#79 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:05:10.548| Log#80 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:05:40.549| Log#81 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:06:10.549| Log#82 INFO    ->               Updating distribution and rewards                |
+|2023-01-08.17:06:19.664| Log#83 EVENT   ->        Received command: SET_PROFILE from the tag 16801        |
+|2023-01-08.17:06:19.664| Log#84 INFO    ->                   User MayorX500 got updated                   |

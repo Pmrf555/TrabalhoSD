@@ -1,6 +1,5 @@
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-//import java.util.concurrent.locks.*;
 import java.time.LocalDate;
 import java.io.Serializable;
 
@@ -10,25 +9,29 @@ import Utilities.SHA256;
 
 public class Scooter implements Serializable {
     public static final Double PRICE_PER_KM = 0.1;
+    public static final Double PRICE_PER_MIN = 0.01;
     private static final long serialVersionUID = 1L;
     private static AtomicInteger idCounter = new AtomicInteger(0);
     private Integer id;
     private String reservationCode;
+    private Long start;
     private Integer x = 0;
     private Integer y = 0;
     private Boolean beingUsed = false; // false if free, true if being used
     private String lastUser = "";
-    //private Lock lock= new ReentrantLock();
 
     public static class InvalidScooter extends Exception {
-        private static final long serialVersionUID = 1L;
-        public InvalidScooter(String message){
+        public InvalidScooter() {
+            // create an exception with a default message
+            super("Invalid scooter");
+        }
+        public InvalidScooter(String message) {
+            // create an exception with a specified message
             super(message);
         }
     }
 
     public static class InvalidReservationCode extends Exception{
-        private static final long serialVersionUID = 1L;
         public InvalidReservationCode(String message){
             super(message);
         }
@@ -218,6 +221,7 @@ public class Scooter implements Serializable {
 
     public String aquire(){
         this.beingUsed = true;
+        this.start = System.currentTimeMillis();
         return this.reservationCode;
     }
 
@@ -235,6 +239,8 @@ public class Scooter implements Serializable {
     public Scooter.Invoice generateInvoice(User user, Pair<Integer, Integer> to){
         Scooter.Invoice.Status paid = Scooter.Invoice.Status.NULL;
         Double price = Scooter.PRICE_PER_KM * Matrix.manhattan(this.x, this.y, to.getL(), to.getR());
+        float took = ((System.currentTimeMillis()) - this.start)/1000;
+        price = (Scooter.PRICE_PER_MIN * took) + (price);
         if(user.getDiscountUses() > 0 && user.Subscribed())
             price *= user.getDiscount();
             user.setDiscountUses(user.getDiscountUses() - 1);
