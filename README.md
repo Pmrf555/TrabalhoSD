@@ -28,7 +28,7 @@ Go to the project directory
   cd trotiUM/src
 ```
 
-Start the Server
+Start the Server \
 You have the abilty to change the Grid_Dimension, Radius and the number of Scooters on the Map using the flags `-d new_dimension`, `-r new_radius` and `-s n_scooters`.
 
 ```bash
