@@ -29,9 +29,10 @@ Go to the project directory
 ```
 
 Start the Server
+You have the abilty to change the Grid_Dimension, Radius and the number of Scooters on the Map using the flags `-d new_dimension`, `-r new_radius` and `-s n_scooters`.
 
 ```bash
-  sh Server.sh
+  sh Server.sh [-d new_dimension] [-r new_radius] [-s n_scooters]
 ```
 
 Start the Client
