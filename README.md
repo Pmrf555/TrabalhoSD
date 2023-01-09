@@ -28,11 +28,10 @@ Go to the project directory
   cd trotiUM/src
 ```
 
-Start the Server \
-You have the abilty to change the Grid_Dimension, Radius and the number of Scooters on the Map using the flags `-d new_dimension`, `-r new_radius` and `-s n_scooters`.
+Start the Server
 
 ```bash
-  sh Server.sh [-d new_dimension] [-r new_radius] [-s n_scooters]
+  sh Server.sh
 ```
 
 Start the Client
@@ -80,7 +79,7 @@ Each reward is identified by an origin-destination pair and has an associated re
 ## Documentation
 
 - [Project Script](trotiUM/resources/Script.pdf)
-- [Project Report](trotiUM/resources/placeholder.md)
+- [Project Report](trotiUM/resources/202223_LEI_SD.pdf)
 
 
 ## Demo

@@ -292,20 +292,17 @@ class Server{
                                 break;
                     
                             case Message.LOGIN:
-                                if (data.getClass() == String.class && ((String) data).length() != 0){
-                                    String dataString = (String) data;
-                                    String[] dataParts = dataString.split(",");
-                                    if (dataParts.length >= 2){
-                                        String username = dataParts[0];
-                                        String password = dataParts[1];
-                                        boolean success = false;
-                                        try {
-                                            success = login(username, password);
-                                        } catch (Exception e) {
-                                            c.write(tag, Message.ERROR, e);
-                                        }
-                                        if (success) c.write(tag, Message.OK, (Boolean)true);
+                                if (data.getClass() == User.class){
+                                    User dataUser = (User) data;
+                                    String username = dataUser.getUsername();
+                                    String password = dataUser.getPassword();
+                                    boolean success = false;
+                                    try {
+                                        success = login(username, password);
+                                    } catch (Exception e) {
+                                        c.write(tag, Message.ERROR, e);
                                     }
+                                    if (success) c.write(tag, Message.OK, (Boolean)true);
                                 }
                                 break;
                             

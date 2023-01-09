@@ -465,7 +465,7 @@ public class Client {
         Object data;
         //String command;
         try {
-            this.connection.send(this.clientID, Message.LOGIN, (username + "," + password));
+            this.connection.send(this.clientID, Message.LOGIN, new User(username, password));
             response = this.connection.receive(this.clientID);
             data = response.getR();
         }catch (Exception e){
@@ -568,7 +568,7 @@ public class Client {
     }
 
     public void make_trip(){
-        String scooterID = Client.ClientView.askForString("Scooter Price:\n\tPrice Per Minute: 0.01€ \n\tPrice Per Km: 0.10€\n\nScooter ID: ");
+        String scooterID = Client.ClientView.askForString("Scooter ID: ");
         Pair<String,Object> response;
         Object data;
         //String command;
